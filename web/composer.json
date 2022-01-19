@@ -8,11 +8,12 @@
         "darkaonline/swagger-lume": "~8",
         "doctrine/dbal": "~3",
         "ext-json": "*",
-        "ext-gmp": "*",
         "fruitcake/laravel-cors": "~2",
+        "guzzlehttp/guzzle": "~7",
         "laravel/lumen-framework": "~8",
         "sumra/json-api": "*",
         "sumra/pubsub": "*",
+        "sumra/sdk": "*",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "~11"
     },
     "require-dev": {
@@ -41,6 +42,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
+        {
+            "type": "path",
+            "url": "../sumra-sdk",
+            "options": {
+                "symlink": false
+            }
+        },
         {
             "type": "path",
             "url": "../pubsub",

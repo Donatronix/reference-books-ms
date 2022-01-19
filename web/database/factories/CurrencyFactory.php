@@ -3,10 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Currency;
-use App\Models\Order;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class CurrencyFactory extends Factory
 {
@@ -25,9 +22,9 @@ class CurrencyFactory extends Factory
     public function definition()
     {
         return [
-            'title'=> $this->faker->currency_name(),
-            'code'=> $this->faker->currencyCode,
-            'symbol'=> $this->faker->currency_symbol(),
+            'title' => $this->faker->currency_name(),
+            'code' => $this->faker->currencyCode,
+            'symbol' => $this->faker->currency_symbol(),
         ];
     }
 }

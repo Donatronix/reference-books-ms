@@ -2,21 +2,34 @@
 
 namespace App\Api\V1\Controllers;
 
-use App\Api\V1\Controllers\Controller;
+use App\Contracts\CurrencyRepositoryContract;
 use App\Models\Currency;
-use App\Traits\ResponseItemsData;
-use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Sumra\SDK\Traits\Response\ResponseItemsData;
 
 /**
- * Class CurrenciesController
+ * Class CurrencyController
  *
  * @package App\Api\V1\Controllers
  */
 class CurrencyController extends Controller
 {
+    /**
+     *
+     * @var CurrencyRepositoryContract
+     */
+    private CurrencyRepositoryContract $currencyRepository;
+
+    /**
+     * @param CurrencyRepositoryContract $currencyRepository
+     */
+    public function __construct(CurrencyRepositoryContract $currencyRepository)
+    {
+        $this->currencyRepository = $currencyRepository;
+    }
+
     /**
      * Method for list of currencies
      *
@@ -74,7 +87,7 @@ class CurrencyController extends Controller
      *
      * @throws \Exception
      */
-    public function index(Request $request) : JsonResponse
+    public function index(Request $request): JsonResponse
     {
         try {
             $columnsMap = [
@@ -108,107 +121,16 @@ class CurrencyController extends Controller
      *
      * @return mixed
      */
-//    public function show($id){
-//        try {
-//            return Currency::findOrFail($id);
-//        } catch (ModelNotFoundException $e) {
-//            response()->jsonApi([
-//                'type' => 'danger',
-//                'title' => 'Currency not found',
-//                'message' => "Currency with #{$id} not found"
-//            ], 404);
-//        }
-//    }
-
-    /**
-     * Method for update status of currency
-     *
-     * @OA\Post(
-     *     path="/currencies/{id}/update-status",
-     *     summary="Update status of currency",
-     *     description="Update status of currency",
-     *     tags={"Currencies"},
-     *
-     *     security={{
-     *         "default": {
-     *             "ManagerRead",
-     *             "User",
-     *             "ManagerWrite"
-     *         }
-     *     }},
-     *     x={
-     *         "auth-type": "Manager Read & Manager Write",
-     *         "throttling-tier": "Unlimited",
-     *         "wso2-application-security": {
-     *             "security-types": {"oauth2"},
-     *             "optional": "false"
-     *         }
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         description="Currency id",
-     *         required=true,
-     *         in="path",
-     *          @OA\Schema (
-     *              type="integer"
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *         name="status",
-     *         description="Currency status. Types of statuses: Active = 1, Inactive = 0",
-     *         required=true,
-     *         in="query",
-     *          @OA\Schema (
-     *              type="integer"
-     *          )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success"
-     *     )
-     * )
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param                          $id
-     *
-     * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function updateStatus(Request $request, $id)
+    public function show($id)
     {
-        // Validate input
-        $this->validate($request, [
-            'status' => 'boolean'
-        ]);
-
-        // Get currency model
         try {
-            $currency = Currency::findOrFail($id);
+            return Currency::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return response()->jsonApi([
+            response()->jsonApi([
                 'type' => 'danger',
                 'title' => 'Currency not found',
-                'message' => "Currency #{$id} not found"
+                'message' => "Currency with #{$id} not found"
             ], 404);
-        }
-
-        // Update currency data
-        try {
-            $currency->status = $request->get('status', Currency::STATUS_ACTIVE);
-            $currency->save();
-
-            // Return response
-            return response()->jsonApi([
-                'type' => 'success',
-                'title' => 'Status update',
-                'message' => "Status has been successful updated"
-            ], 200);
-        } catch (Exception $e) {
-            return response()->jsonApi([
-                'type' => 'danger',
-                'title' => 'Status update',
-                'message' => $e->getMessage()
-            ], $e->getCode());
         }
     }
 
@@ -218,7 +140,7 @@ class CurrencyController extends Controller
      * @OA\Get(
      *     path="/reference/currencies",
      *     description="Get list currencies for References",
-     *     tags={"References"},
+     *     tags={"Currencies"},
      *
      *     security={{
      *         "default": {
@@ -273,7 +195,7 @@ class CurrencyController extends Controller
      * Method for get codes of currencies
      *
      * @OA\Get(
-     *     path="/v1/currencies/codes",
+     *     path="/currencies/codes",
      *     description="Get codes of currencies",
      *     tags={"Currencies"},
      *
@@ -309,4 +231,87 @@ class CurrencyController extends Controller
         ], 200);
     }
 
+    /**
+     * Method for list of currencies
+     *
+     * @OA\Get(
+     *     path="/currencies/rate",
+     *     summary="Show list of currencies",
+     *     description="Show list of currencies",
+     *     tags={"Currencies"},
+     *
+     *     security={{
+     *         "default": {
+     *             "ManagerRead",
+     *             "User",
+     *             "ManagerWrite"
+     *         }
+     *     }},
+     *     x={
+     *         "auth-type": "Application & Application User",
+     *         "throttling-tier": "Unlimited",
+     *         "wso2-application-security": {
+     *             "security-types": {"oauth2"},
+     *             "optional": "false"
+     *         }
+     *     },
+     *
+     *     @OA\Parameter(
+     *         name="limit",
+     *         description="count of currencies in return",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default = 20,
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         description="page of list",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default=1,
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     *
+     * @param Request $request
+     *
+     * @return \Sumra\JsonApi\
+     *
+     * @throws \Exception
+     */
+    public function getRate(Request $request)
+    {
+        $from = $this->currencyRepository->findByCode($request->from_currency);
+        $to = $this->currencyRepository->findByCode($request->to_currency);
+
+        $rate = 1 / $from->rate;
+        $rate = $rate * $to->rate;
+        $symmetricRate = $rate * 1.03;
+
+        return [
+            'from_currency' => $from->code,
+            'from_symbol' => $from->getSymbol(),
+            'to_currency' => $to->code,
+            'to_symbol' => $to->getSymbol(),
+            'rate' => $rate,
+            'symmetric_rate' => $symmetricRate
+        ];
+    }
+
+    public function getCurrencies(Request $request)
+    {
+        $mayorCurrencies = $this->currencyRepository->getDefaultCurrencies();
+        $minorCurrencies = $this->currencyRepository->getMinorCurrencies();
+
+        return $mayorCurrencies->merge($minorCurrencies);
+    }
 }

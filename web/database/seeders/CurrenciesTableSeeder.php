@@ -15,52 +15,84 @@ class CurrenciesTableSeeder extends Seeder
     {
         $list = [
             [
-                'name' => 'US Dollar',
+                'title' => 'US Dollar',
                 'code' => 'USD',
                 'symbol' => '$',
+                'rate' => '1',
                 'type' => Currency::TYPE_FIAT,
+                'status' => true
             ],
             [
-                'name' => 'Euro',
+                'title' => 'Euro',
                 'code' => 'EUR',
                 'symbol' => '€',
+                'rate' => '1',
                 'type' => Currency::TYPE_FIAT,
+                'status' => true
             ],
             [
-                'name' => 'British pound',
+                'title' => 'British pound',
                 'code' => 'GBP',
                 'symbol' => '£',
+                'rate' => '1',
                 'type' => Currency::TYPE_FIAT,
+                'status' => true
             ],
             [
-                'name' => 'Bitcoin',
+                'title' => 'Bitcoin',
                 'code' => 'BTC',
                 'symbol' => 'BTC',
+                'rate' => '1',
                 'type' => Currency::TYPE_CRYPTO,
+                'status' => true
             ],
             [
-                'name' => 'Etherium',
+                'title' => 'Etherium',
                 'code' => 'ETH',
                 'symbol' => 'ETH',
+                'rate' => '1',
                 'type' => Currency::TYPE_CRYPTO,
+                'status' => true
             ],
             [
-                'name' => 'Solana',
+                'title' => 'Solana',
                 'code' => 'SOL',
                 'symbol' => 'SOL',
+                'rate' => '1',
                 'type' => Currency::TYPE_CRYPTO,
+                'status' => true
             ],
             [
-                'name' => 'Binance Coin',
+                'title' => 'Binance Coin',
                 'code' => 'BNB',
                 'symbol' => 'BNB',
+                'rate' => '1',
                 'type' => Currency::TYPE_CRYPTO,
+                'status' => true
             ],
             [
-                'name' => 'Cardana',
+                'title' => 'Cardana',
                 'code' => 'ADA',
                 'symbol' => 'ADA',
+                'rate' => '1',
                 'type' => Currency::TYPE_CRYPTO,
+                'status' => true
+            ],
+            [
+                'title' => 'Divits Credit',
+                'code' => 'DVC',
+                'symbol' => '¤',
+                'rate' => '1',
+                'type' => Currency::TYPE_VIRTUAL,
+                'status' => true
+            ],
+            [
+                'title' => 'Sumra DIVITS',
+                'code' => 'DVT',
+                'symbol' => 'DVT',
+                'rate' => '1',
+                'type' => Currency::TYPE_VIRTUAL,
+                'status' => true
             ],
         ];
 
@@ -69,15 +101,3 @@ class CurrenciesTableSeeder extends Seeder
         }
     }
 }
-
-//    [
-//        'name' => 'British Pound',
-//        'code' => 'GBP',
-//        'symbol' => '£'
-//    ],
-//    [
-//        'name' => 'Divits Credit',
-//        'code' => 'DVC',
-//        'symbol' => '¤'
-//    ],
-// (1,'Sumra DIVITS','DVT','DVT','1.00',

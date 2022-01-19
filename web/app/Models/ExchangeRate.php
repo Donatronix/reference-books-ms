@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Model\Currency;
+namespace App\Models;
 
-use App\Model\Concerns\HasCurrency;
 use Illuminate\Database\Eloquent\Model;
+use Sumra\SDK\Traits\HasCurrency;
 
 /**
- *
- * @author Mauricio
  * @property int $rate
  * @property Currency $currency
- *
  */
 class ExchangeRate extends Model
 {

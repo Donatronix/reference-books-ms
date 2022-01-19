@@ -8,13 +8,15 @@ $router->group([
     'namespace' => '\App\Api\V1\Controllers',
     'middleware' => 'checkUser'
 ], function ($router) {
-
+    /**
+     * Currencies for clients
+     */
     $router->group(['prefix' => 'currencies'], function ($router) {
-        $router->get('/', 'CurrenciesController@index');
-        $router->post('/{id:[\d]+}/update-status', 'CurrenciesController@updateStatus');
+        $router->get('/', 'CurrencyController@index');
+        $router->get('reference', 'CurrencyController@reference');
+        $router->get('rate', 'CurrencyController@getRate');
+        $router->get('getCurrencies', 'CurrencyController@getCurrencies');
     });
-
-    $router->get('/currencies', 'CurrenciesController@reference');
 
     /**
      * ADMIN PANEL
@@ -24,10 +26,13 @@ $router->group([
         'namespace' => 'Admin',
         'middleware' => 'checkAdmin'
     ], function ($router) {
-
+        /**
+         * Currencies Management
+         */
         $router->group(['prefix' => 'currencies'], function ($router) {
-            $router->post('/', 'CurrenciesController@store');
+            $router->post('/', 'CurrencyController@store');
+            $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');
         });
-
     });
 });
+

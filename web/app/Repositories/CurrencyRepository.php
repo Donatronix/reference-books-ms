@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Model\Repositories;
+namespace App\Repositories;
 
-use App\Model\Locations\Currency;
+use App\Contracts\CurrencyRepositoryContract;
+use App\Models\Currency;
 
 /**
  *
- * @author Mauricio
- *
  */
-class CurrencyRepository implements CurrencyContract
+class CurrencyRepository implements CurrencyRepositoryContract
 {
-    const DEFAULT_CURRENCIES = array(
+    const DEFAULT_CURRENCIES = [
         "GBP",
         "USD",
         "CAD",
         "EUR",
         "AUD",
         "JPY"
-    );
+    ];
 
-    const MINOR_CURRENCIES = array(
+    const MINOR_CURRENCIES = [
         'CZK',
         'CLP',
         'CZQ',
@@ -58,7 +57,7 @@ class CurrencyRepository implements CurrencyContract
         'THB',
         'TRY',
         'CHF'
-    );
+    ];
 
     /**
      *
@@ -81,9 +80,9 @@ class CurrencyRepository implements CurrencyContract
     /**
      * (non-PHPdoc)
      *
-     * @see \App\Model\Repositories\CurrencyContract::getInstance()
+     * @see CurrencyRepositoryContract::getInstance()
      */
-    public static function getInstance(): CurrencyContract
+    public static function getInstance(): CurrencyRepositoryContract
     {
         if (!isset(static::$instance)) {
             static::$instance = new CurrencyRepository();
@@ -95,7 +94,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      * (non-PHPdoc)
      *
-     * @see \App\Model\Repositories\CurrencyContract::all()
+     * @see CurrencyRepositoryContract::all()
      */
     public function all()
     {
@@ -110,7 +109,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      * (non-PHPdoc)
      *
-     * @see \App\Model\Repositories\CurrencyContract::findByCodes()
+     * @see CurrencyRepositoryContract::findByCodes()
      */
     public function findByCodes(array $codes)
     {
@@ -125,7 +124,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      * (non-PHPdoc)
      *
-     * @see \App\Model\Repositories\CurrencyContract::find()
+     * @see CurrencyRepositoryContract::find()
      */
     public function find($id)
     {
@@ -135,7 +134,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      * (non-PHPdoc)
      *
-     * @see \App\Model\Repositories\CurrencyContract::save()
+     * @see CurrencyRepositoryContract::save()
      */
     public function save($currency)
     {
@@ -147,7 +146,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      *
      * {@inheritdoc}
-     * @see \App\Model\Repositories\CurrencyContract::isActive()
+     * @see CurrencyRepositoryContract::isActive()
      */
     public function isActive($code): bool
     {
@@ -159,7 +158,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      *
      * {@inheritdoc}
-     * @see \App\Model\Repositories\CurrencyContract::getUserCurrency()
+     * @see CurrencyRepositoryContract::getUserCurrency()
      */
     public function getUserCurrency(): Currency
     {
@@ -173,7 +172,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      *
      * {@inheritdoc}
-     * @see \App\Model\Repositories\CurrencyContract::setUserCurrency()
+     * @see CurrencyRepositoryContract::setUserCurrency()
      */
     public function setUserCurrency($currency)
     {
@@ -183,7 +182,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      *
      * {@inheritdoc}
-     * @see \App\Model\Repositories\CurrencyContract::getDefaultCurrency()
+     * @see CurrencyRepositoryContract::getDefaultCurrency()
      */
     public function getDefaultCurrency(): Currency
     {
@@ -193,7 +192,7 @@ class CurrencyRepository implements CurrencyContract
     /**
      *
      * {@inheritdoc}
-     * @see \App\Model\Repositories\CurrencyContract::findByCode()
+     * @see CurrencyRepositoryContract::findByCode()
      */
     public function findByCode($code)
     {

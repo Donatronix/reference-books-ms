@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GetCurrencies;
 use App\Console\Commands\KeyGenerateCommand;
 use App\Console\Commands\RouteListCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         KeyGenerateCommand::class,
-        RouteListCommand::class
+        RouteListCommand::class,
+        GetCurrencies::class
     ];
 
     /**
@@ -28,15 +30,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        //
+        // Run
+        $schedule->command('currencies:update')
+            ->hourly()
+            ->runInBackground()
+            ->emailOutputTo('support@ultainfinity.com');
     }
 
     /**
      * Get the timezone that should be used by default for scheduled events.
      *
-     * @return string
-     */
-    /**
      * @return string
      */
     protected function scheduleTimezone(): string

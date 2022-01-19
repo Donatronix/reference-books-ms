@@ -18,7 +18,8 @@ class CreateCurrenciesTable extends Migration
             $table->string('title', 100);
             $table->string('code', 3);
             $table->string('symbol', 3);
-            $table->float('rates',15,2)->unsigned();
+            //$table->string('unicode_decimal')->nullable();
+            $table->float('rate',15,2)->unsigned();
             $table->tinyInteger('type');
             $table->boolean('status')->default('0');
             $table->timestamps();

@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Model\Repositories;
+namespace App\Contracts;
 
-use App\Model\Locations\Currency;
+use App\Models\Currency;
+use App\Repositories\CurrencyRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
  *
- * @author Mauricio
- *
  */
-interface CurrencyContract
+interface CurrencyRepositoryContract
 {
     /**
      *
-     * @return CurrencyContract
+     * @return CurrencyRepository
      */
-    public static function getInstance(): CurrencyContract;
+    public static function getInstance(): CurrencyRepository;
 
     /**
      *

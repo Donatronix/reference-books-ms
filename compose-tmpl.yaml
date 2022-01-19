@@ -8,8 +8,8 @@ services:
     networks:
       - kus-net
     ports:
-      - '8100:80'
-      - '18100:443'
+      - '8112:80'
+      - '18112:443'
     environment:
       - WEB_DOCUMENT_ROOT=/var/www/html/public
 #      - WEB_ALIAS_DOMAIN=api.sumrameet.com

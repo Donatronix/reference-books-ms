@@ -7,7 +7,7 @@ use App\Models\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Sumra\SDK\Traits\Response\ResponseItemsData;
+use Sumra\SDK\Traits\Collection\CollectionItemsData;
 
 /**
  * Class CurrencyController
@@ -102,7 +102,7 @@ class CurrencyController extends Controller
                 ->orderBy('name', 'asc')
                 ->paginate($request->get('limit', 20));
 
-            $response = ResponseItemsData::transform($data, $columnsMap);
+            $response = CollectionItemsData::transform($data, $columnsMap);
 
             return response()->jsonApi(array_merge(['success' => true], json_decode($data->toJson(), true)));
         } catch (\Exception $e) {

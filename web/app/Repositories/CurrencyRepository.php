@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\CurrencyRepositoryContract;
 use App\Models\Currency;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  *
@@ -72,17 +73,9 @@ class CurrencyRepository implements CurrencyRepositoryContract
     private $userCurrency;
 
     /**
+     * @see CurrencyRepository::getInstance()
      */
-    protected function __construct()
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
-     *
-     * @see CurrencyRepositoryContract::getInstance()
-     */
-    public static function getInstance(): CurrencyRepositoryContract
+    public static function getInstance(): CurrencyRepository
     {
         if (!isset(static::$instance)) {
             static::$instance = new CurrencyRepository();
@@ -92,28 +85,40 @@ class CurrencyRepository implements CurrencyRepositoryContract
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see CurrencyRepositoryContract::all()
+     * @return Currency[]|CurrencyRepository[]|Collection
      */
     public function all()
     {
         return Currency::all();
     }
 
+    /**
+     * @return CurrencyRepository[]|Collection
+     */
     public function getDefaultCurrencies()
     {
         return $this->findByCodes(self::DEFAULT_CURRENCIES);
     }
 
+    public function findByCode($code)
+    {
+        return Currency::where('code', $code)->first();
+    }
+
+    public function find($id)
+    {
+        return Currency::find($id);
+    }
+
     /**
-     * (non-PHPdoc)
-     *
-     * @see CurrencyRepositoryContract::findByCodes()
+     * @param array $codes
+     * @return CurrencyRepository[]|\Illuminate\Database\Eloquent\Collection
      */
     public function findByCodes(array $codes)
     {
-        return Currency::whereIn('code', $codes)->orderBy('name')->get();
+        return Currency::whereIn('code', $codes)
+            ->orderBy('title')
+            ->get();
     }
 
     public function getMinorCurrencies()
@@ -121,21 +126,6 @@ class CurrencyRepository implements CurrencyRepositoryContract
         return $this->findByCodes(self::MINOR_CURRENCIES);
     }
 
-    /**
-     * (non-PHPdoc)
-     *
-     * @see CurrencyRepositoryContract::find()
-     */
-    public function find($id)
-    {
-        return Currency::find($id);
-    }
-
-    /**
-     * (non-PHPdoc)
-     *
-     * @see CurrencyRepositoryContract::save()
-     */
     public function save($currency)
     {
         $currency->save();
@@ -143,11 +133,6 @@ class CurrencyRepository implements CurrencyRepositoryContract
         return $currency;
     }
 
-    /**
-     *
-     * {@inheritdoc}
-     * @see CurrencyRepositoryContract::isActive()
-     */
     public function isActive($code): bool
     {
         $code = $code ?: $this->getUserCurrency();
@@ -155,11 +140,6 @@ class CurrencyRepository implements CurrencyRepositoryContract
         return $code === $this->getUserCurrency()->code;
     }
 
-    /**
-     *
-     * {@inheritdoc}
-     * @see CurrencyRepositoryContract::getUserCurrency()
-     */
     public function getUserCurrency(): Currency
     {
         if (is_null($this->userCurrency)) {
@@ -169,21 +149,11 @@ class CurrencyRepository implements CurrencyRepositoryContract
         return $this->userCurrency;
     }
 
-    /**
-     *
-     * {@inheritdoc}
-     * @see CurrencyRepositoryContract::setUserCurrency()
-     */
     public function setUserCurrency($currency)
     {
         $this->userCurrency = $currency;
     }
 
-    /**
-     *
-     * {@inheritdoc}
-     * @see CurrencyRepositoryContract::getDefaultCurrency()
-     */
     public function getDefaultCurrency(): Currency
     {
         return $this->findByCode(config('app.location.currency'));
@@ -191,15 +161,13 @@ class CurrencyRepository implements CurrencyRepositoryContract
 
     /**
      *
-     * {@inheritdoc}
-     * @see CurrencyRepositoryContract::findByCode()
+     * @param Currency $currency
      */
-    public function findByCode($code)
+    public function getRate($currency)
     {
-        return Currency::where('code', $code)->first();
-    }
+        $rate = 1 / $currency->rate;
+        $rate = $rate * $this->rate;
 
-    protected function __clone()
-    {
+        return $rate;
     }
 }

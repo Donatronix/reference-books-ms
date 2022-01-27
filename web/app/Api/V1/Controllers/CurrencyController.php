@@ -7,7 +7,6 @@ use App\Models\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Sumra\SDK\Traits\Collection\CollectionItemsData;
 
 /**
  * Class CurrencyController
@@ -20,23 +19,23 @@ class CurrencyController extends Controller
      *
      * @var CurrencyRepositoryContract
      */
-    private CurrencyRepositoryContract $currencyRepository;
+    private CurrencyRepositoryContract $repository;
 
     /**
-     * @param CurrencyRepositoryContract $currencyRepository
+     * @param CurrencyRepositoryContract $repository
      */
-    public function __construct(CurrencyRepositoryContract $currencyRepository)
+    public function __construct(CurrencyRepositoryContract $repository)
     {
-        $this->currencyRepository = $currencyRepository;
+        $this->repository = $repository;
     }
 
     /**
-     * Method for list of currencies
+     * Method for list currencies
      *
      * @OA\Get(
      *     path="/currencies",
-     *     summary="Show list of currencies",
-     *     description="Show list of currencies",
+     *     summary="Get list currencies",
+     *     description="Get list currencies",
      *     tags={"Currencies"},
      *
      *     security={{
@@ -54,27 +53,6 @@ class CurrencyController extends Controller
      *             "optional": "false"
      *         }
      *     },
-     *
-     *     @OA\Parameter(
-     *         name="limit",
-     *         description="count of currencies in return",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default = 20,
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         description="page of list",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default=1,
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -89,26 +67,38 @@ class CurrencyController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+//            $mayorCurrencies = $this->repository->getDefaultCurrencies();
+//            $minorCurrencies = $this->repository->getMinorCurrencies();
+//            dd($mayorCurrencies, $minorCurrencies);
+//            return $mayorCurrencies->merge($minorCurrencies);
+
         try {
-            $columnsMap = [
-                'id' => 'ID',
-                'name' => 'Name',
-                'code' => 'Code',
-                'symbol' => 'Symbol',
-                'status' => 'Status'
-            ];
+            $list = Currency::select(['title as label', 'code', 'symbol', 'icon'])
+                ->orderBy('title', 'asc')
+                ->get();
 
-            $data = Currency::select(array_keys($columnsMap))
-                ->orderBy('name', 'asc')
-                ->paginate($request->get('limit', 20));
+            $items = [];
+            foreach ($list as $item) {
+                $items[] = (object)[
+                    'value' => $item->code,
+                    'label' => $item->symbol . ' - ' . $item->title,
+                    'icon' => $item->icon
+                ];
+            }
 
-            $response = CollectionItemsData::transform($data, $columnsMap);
+            //array_merge(['success' => true], json_decode($data->toJson(), true))
 
-            return response()->jsonApi(array_merge(['success' => true], json_decode($data->toJson(), true)));
+            // Return response
+            return response()->jsonApi([
+                'type' => 'success',
+                'title' => 'Getting currencies collection',
+                'message' => 'Currencies collection was received successfully',
+                'data' => $items
+            ], 200);
         } catch (\Exception $e) {
             return response()->jsonApi([
                 'type' => 'danger',
-                'title' => 'Display a listing of currencies',
+                'title' => 'Getting currencies collection',
                 'message' => $e->getMessage()
             ], 404);
         }
@@ -135,11 +125,12 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Method for list currencies for References
+     * Method for list of currencies
      *
      * @OA\Get(
-     *     path="/reference/currencies",
-     *     description="Get list currencies for References",
+     *     path="/currencies/rate",
+     *     summary="Show list of currencies",
+     *     description="Show list of currencies",
      *     tags={"Currencies"},
      *
      *     security={{
@@ -158,37 +149,55 @@ class CurrencyController extends Controller
      *         }
      *     },
      *
+     *     @OA\Parameter(
+     *         name="from_currency",
+     *         description="from ",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default = 20,
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="to_currency",
+     *         description="page of list",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default=1,
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *     )
      * )
      *
+     * @param Request $request
+     *
      * @return \Sumra\JsonApi\
      *
      * @throws \Exception
      */
-    public function reference()
+    public function getRate(Request $request)
     {
-        try {
-            $list = Currency::orderBy('name', 'asc')->get();
+        $from = $this->repository->findByCode($request->from_currency);
+        $to = $this->repository->findByCode($request->to_currency);
 
-            $items = [];
-            foreach ($list as $item) {
-                $items[] = (object)[
-                    'value' => $item->id,
-                    'label' => $item->symbol . ' - ' . $item->name
-                ];
-            }
+        dd($from, $to);
 
-            return response()->jsonApi($items);
-        } catch (\Exception $e) {
-            return response()->jsonApi([
-                'type' => 'danger',
-                'title' => 'Display a listing of currencies',
-                'message' => $e->getMessage()
-            ], 404);
-        }
+        $rate = $from->repository->getRate($to);
+
+        return [
+            'from_currency' => $from->code,
+            'from_symbol' => $from->symbol,
+            'to_currency' => $to->code,
+            'to_symbol' => $to->symbol,
+            'rate' => $rate,
+            'symmetric_rate' => ($rate * 1.03)
+        ];
     }
 
     /**
@@ -229,89 +238,5 @@ class CurrencyController extends Controller
             'success' => true,
             'codes' => Currency::codes()
         ], 200);
-    }
-
-    /**
-     * Method for list of currencies
-     *
-     * @OA\Get(
-     *     path="/currencies/rate",
-     *     summary="Show list of currencies",
-     *     description="Show list of currencies",
-     *     tags={"Currencies"},
-     *
-     *     security={{
-     *         "default": {
-     *             "ManagerRead",
-     *             "User",
-     *             "ManagerWrite"
-     *         }
-     *     }},
-     *     x={
-     *         "auth-type": "Application & Application User",
-     *         "throttling-tier": "Unlimited",
-     *         "wso2-application-security": {
-     *             "security-types": {"oauth2"},
-     *             "optional": "false"
-     *         }
-     *     },
-     *
-     *     @OA\Parameter(
-     *         name="limit",
-     *         description="count of currencies in return",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default = 20,
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         description="page of list",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default=1,
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success",
-     *     )
-     * )
-     *
-     * @param Request $request
-     *
-     * @return \Sumra\JsonApi\
-     *
-     * @throws \Exception
-     */
-    public function getRate(Request $request)
-    {
-        $from = $this->currencyRepository->findByCode($request->from_currency);
-        $to = $this->currencyRepository->findByCode($request->to_currency);
-
-        $rate = 1 / $from->rate;
-        $rate = $rate * $to->rate;
-        $symmetricRate = $rate * 1.03;
-
-        return [
-            'from_currency' => $from->code,
-            'from_symbol' => $from->getSymbol(),
-            'to_currency' => $to->code,
-            'to_symbol' => $to->getSymbol(),
-            'rate' => $rate,
-            'symmetric_rate' => $symmetricRate
-        ];
-    }
-
-    public function getCurrencies(Request $request)
-    {
-        $mayorCurrencies = $this->currencyRepository->getDefaultCurrencies();
-        $minorCurrencies = $this->currencyRepository->getMinorCurrencies();
-
-        return $mayorCurrencies->merge($minorCurrencies);
     }
 }

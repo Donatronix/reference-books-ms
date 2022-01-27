@@ -13,9 +13,9 @@ $router->group([
      */
     $router->group(['prefix' => 'currencies'], function ($router) {
         $router->get('/', 'CurrencyController@index');
-        $router->get('reference', 'CurrencyController@reference');
         $router->get('rate', 'CurrencyController@getRate');
-        $router->get('getCurrencies', 'CurrencyController@getCurrencies');
+
+        // $router->get('codes', 'CurrencyController@codes');
     });
 
     /**
@@ -27,9 +27,10 @@ $router->group([
         'middleware' => 'checkAdmin'
     ], function ($router) {
         /**
-         * Currencies Management
+         * Currencies Admin Management
          */
         $router->group(['prefix' => 'currencies'], function ($router) {
+            $router->get('/', 'CurrencyController@index');
             $router->post('/', 'CurrencyController@store');
             $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');
         });

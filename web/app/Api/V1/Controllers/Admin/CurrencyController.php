@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Sumra\SDK\Traits\Collection\CollectionItemsData;
 
 /**
  * Class CurrencyController
@@ -16,6 +18,93 @@ use Illuminate\Support\Facades\Validator;
  */
 class CurrencyController extends Controller
 {
+
+    /**
+     * Method for list of currencies
+     *
+     * @OA\Get(
+     *     path="/admin/currencies",
+     *     summary="Show list of currencies",
+     *     description="Show list of currencies",
+     *     tags={"Admin / Currencies"},
+     *
+     *     security={{
+     *         "default": {
+     *             "ManagerRead",
+     *             "User",
+     *             "ManagerWrite"
+     *         }
+     *     }},
+     *     x={
+     *         "auth-type": "Application & Application User",
+     *         "throttling-tier": "Unlimited",
+     *         "wso2-application-security": {
+     *             "security-types": {"oauth2"},
+     *             "optional": "false"
+     *         }
+     *     },
+     *
+     *     @OA\Parameter(
+     *         name="limit",
+     *         description="count of currencies in return",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default = 20,
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         description="page of list",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="integer",
+     *              default=1,
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     *
+     * @param Request $request
+     *
+     * @return \Sumra\JsonApi\
+     *
+     * @throws \Exception
+     */
+    public function index(Request $request): JsonResponse
+    {
+        try {
+            $columnsMap = [
+                'id' => 'ID',
+                'title' => 'Title',
+                'code' => 'Code',
+                'symbol' => 'Symbol',
+                'rate' => 'Currency Rate',
+                'type' => 'Currency Type',
+                'status' => 'Status'
+            ];
+
+            $data = Currency::select(array_keys($columnsMap))
+                ->orderBy('title', 'asc')
+                ->paginate($request->get('limit', 20));
+
+            $response = CollectionItemsData::transform($data, $columnsMap);
+
+            return response()->jsonApi(array_merge(['success' => true], json_decode($data->toJson(), true)));
+        } catch (\Exception $e) {
+            return response()->jsonApi([
+                'type' => 'danger',
+                'title' => 'Display a listing of currencies',
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+
     /**
      * Method for create currency
      *
@@ -33,30 +122,31 @@ class CurrencyController extends Controller
      *         }
      *     }},
      *     x={
-     *         "auth-type": "Manager Read & Manager Write",
+     *         "auth-type": "Application & Application User",
      *         "throttling-tier": "Unlimited",
      *         "wso2-application-security": {
      *             "security-types": {"oauth2"},
      *             "optional": "false"
      *         }
      *     },
+     *
      *     @OA\Parameter(
-     *         name="name",
-     *         description="Currency name",
+     *         name="title",
+     *         description="Currency title",
      *         required=true,
      *         in="path",
-     *          @OA\Schema (
+     *         @OA\Schema(
      *              type="strigng"
-     *          )
+     *         )
      *     ),
      *     @OA\Parameter(
      *         name="status",
      *         description="Currency status. Types of statuses: Active = 1, Inactive = 0",
      *         required=true,
      *         in="query",
-     *          @OA\Schema (
+     *         @OA\Schema(
      *              type="integer"
-     *          )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -65,21 +155,23 @@ class CurrencyController extends Controller
      * )
      *
      * @return \Sumra\JsonApi\
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function store(Request $request)
     {
         try {
             // Validate input
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|min:3',
+                'title' => 'required|string|min:3',
                 'code' => 'required|string|size:3',
                 'symbol' => 'required|string|between:1,2',
                 'status' => 'sometimes|required|boolean'
             ]);
-            if ($validator->fails())
-                throw new Exception($validator->errors()->first());
 
+            if ($validator->fails()){
+                throw new Exception($validator->errors()->first());
+            }
 
             // Create currency model
             $currency = Currency::create($request->all());
@@ -116,30 +208,31 @@ class CurrencyController extends Controller
      *         }
      *     }},
      *     x={
-     *         "auth-type": "Manager Read & Manager Write",
+     *         "auth-type": "Application & Application User",
      *         "throttling-tier": "Unlimited",
      *         "wso2-application-security": {
      *             "security-types": {"oauth2"},
      *             "optional": "false"
      *         }
      *     },
+     *
      *     @OA\Parameter(
      *         name="id",
      *         description="Currency id",
-     *         required=true,
      *         in="path",
-     *          @OA\Schema (
+     *         required=true,
+     *         @OA\Schema(
      *              type="integer"
-     *          )
+     *         )
      *     ),
      *     @OA\Parameter(
      *         name="status",
      *         description="Currency status. Types of statuses: Active = 1, Inactive = 0",
-     *         required=true,
      *         in="query",
-     *          @OA\Schema (
+     *         required=true,
+     *         @OA\Schema(
      *              type="integer"
-     *          )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,

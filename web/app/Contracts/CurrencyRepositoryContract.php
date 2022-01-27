@@ -32,17 +32,17 @@ interface CurrencyRepositoryContract
 
     /**
      *
-     * @param array $codes
-     * @return static[] | Collection
-     */
-    public function findByCodes(array $codes);
-
-    /**
-     *
      * @param string $code
      * @return Currency|null
      */
     public function findByCode($code);
+
+    /**
+     *
+     * @param array $codes
+     * @return static[] | Collection
+     */
+    public function findByCodes(array $codes);
 
     /**
      *

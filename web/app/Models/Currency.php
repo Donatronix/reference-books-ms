@@ -10,11 +10,14 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  *
- * @property integer $id;
- * @property string $name;
- * @property string $code;
+ * @property integer $id
+ * @property string $title
+ * @property string $code
  * @property string $symbol
+ * @property string $icon
  * @property double $rate
+ * @property integer $type
+ * @property boolean $status
  */
 class Currency extends Model
 {
@@ -27,13 +30,6 @@ class Currency extends Model
     const STATUS_INACTIVE = 0;
 
     /**
-     * Currency types
-     */
-    const TYPE_FIAT = 1;
-    const TYPE_CRYPTO = 2;
-    const TYPE_VIRTUAL = 3;
-
-    /**
      * Currency statuses array
      *
      * @var int[]
@@ -41,17 +37,6 @@ class Currency extends Model
     public static array $statuses = [
         self::STATUS_ACTIVE,
         self::STATUS_INACTIVE
-    ];
-
-    /**
-     * Currency types array
-     *
-     * @var int[]
-     */
-    public static $types = [
-        self::TYPE_FIAT,
-        self::TYPE_CRYPTO,
-        self::TYPE_VIRTUAL
     ];
 
     /**
@@ -76,4 +61,12 @@ class Currency extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function type()
+    {
+        return $this->belongsTo(CurrencyType::class);
+    }
 }

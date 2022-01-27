@@ -30,12 +30,12 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Method for list currencies
+     * Method for getting list of currencies
      *
      * @OA\Get(
      *     path="/currencies",
-     *     summary="Get list currencies",
-     *     description="Get list currencies",
+     *     summary="Getting a list of currencies",
+     *     description="Getting a list of currencies",
      *     tags={"Currencies"},
      *
      *     security={{
@@ -53,6 +53,17 @@ class CurrencyController extends Controller
      *             "optional": "false"
      *         }
      *     },
+     *
+     *     @OA\Parameter(
+     *         name="type",
+     *         description="Currency type (fiat | crypto | virtual)",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *              type="string",
+     *              default="fiat",
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -73,27 +84,29 @@ class CurrencyController extends Controller
 //            return $mayorCurrencies->merge($minorCurrencies);
 
         try {
-            $list = Currency::select(['title as label', 'code', 'symbol', 'icon'])
+            $list = Currency::select(['title as label', 'code', 'symbol', 'icon', 'type_id'])
+                ->when(($request->has('type') && !empty($request->get('type'))), function ($q) use ($request) {
+                    return $q->whereHas('type', function ($q) use ($request) {
+                        return $q->where('code', $request->get('type'));
+                    });
+                })
+                ->where('status', true)
                 ->orderBy('title', 'asc')
                 ->get();
 
-            $items = [];
-            foreach ($list as $item) {
-                $items[] = (object)[
-                    'value' => $item->code,
-                    'label' => $item->symbol . ' - ' . $item->title,
-                    'icon' => $item->icon
-                ];
-            }
+            // Transform campaigns
+            $list->map(function ($object) {
+                $object->setAttribute('type', $object->type_id == 1 ? 'fiat' : 'crypto');
 
-            //array_merge(['success' => true], json_decode($data->toJson(), true))
+                return $object;
+            });
 
             // Return response
             return response()->jsonApi([
                 'type' => 'success',
                 'title' => 'Getting currencies collection',
                 'message' => 'Currencies collection was received successfully',
-                'data' => $items
+                'data' => $list->toArray()
             ], 200);
         } catch (\Exception $e) {
             return response()->jsonApi([

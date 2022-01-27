@@ -20,7 +20,10 @@ class CreateCurrenciesTable extends Migration
             $table->string('symbol', 7)->default('U+00A4');
             $table->binary('icon')->nullable();
             $table->float('rate',15,2)->unsigned();
-            $table->tinyInteger('type');
+
+            $table->unsignedTinyInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('currency_types')->onDelete('cascade');
+
             $table->boolean('status')->default('0');
             $table->timestamps();
         });

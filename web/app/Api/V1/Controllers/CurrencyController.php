@@ -78,25 +78,30 @@ class CurrencyController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-//            $mayorCurrencies = $this->repository->getDefaultCurrencies();
-//            $minorCurrencies = $this->repository->getMinorCurrencies();
-//            dd($mayorCurrencies, $minorCurrencies);
-//            return $mayorCurrencies->merge($minorCurrencies);
-
         try {
-            $list = Currency::select(['title as label', 'code', 'symbol', 'icon', 'type_id'])
+            $list = Currency::select([
+                'title as label',
+                'code',
+                'icon',
+                'type_id',
+                'rate'
+            ])
+                ->with('type:id,code')
                 ->when(($request->has('type') && !empty($request->get('type'))), function ($q) use ($request) {
                     return $q->whereHas('type', function ($q) use ($request) {
                         return $q->where('code', $request->get('type'));
                     });
                 })
                 ->where('status', true)
-                ->orderBy('title', 'asc')
+                ->orderBy('sort', 'asc')
                 ->get();
 
-            // Transform campaigns
+            // Transform currency object
             $list->map(function ($object) {
-                $object->setAttribute('type', $object->type_id == 1 ? 'fiat' : 'crypto');
+                //
+                $code = $object->type->code;
+                unset($object->type);
+                $object->setAttribute('type', $code);
 
                 return $object;
             });
@@ -115,6 +120,11 @@ class CurrencyController extends Controller
                 'message' => $e->getMessage()
             ], 404);
         }
+
+//            $mayorCurrencies = $this->repository->getDefaultCurrencies();
+//            $minorCurrencies = $this->repository->getMinorCurrencies();
+//            dd($mayorCurrencies, $minorCurrencies);
+//            return $mayorCurrencies->merge($minorCurrencies);
     }
 
     /**

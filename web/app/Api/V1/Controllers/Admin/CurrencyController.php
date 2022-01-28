@@ -86,6 +86,7 @@ class CurrencyController extends Controller
                 'symbol' => 'Symbol',
                 'rate' => 'Currency Rate',
                 'type' => 'Currency Type',
+                'sort' => 'Sort',
                 'status' => 'Status'
             ];
 

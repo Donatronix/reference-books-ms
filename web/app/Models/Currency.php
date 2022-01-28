@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Model Currency
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * Currency status
@@ -51,6 +53,7 @@ class Currency extends Model
         'icon',
         'rate',
         'type',
+        'sort',
         'status'
     ];
 
@@ -58,8 +61,10 @@ class Currency extends Model
      * @var string[]
      */
     protected $hidden = [
+        'type_id',
         'created_at',
         'updated_at',
+        'deleted_at'
     ];
 
     /**

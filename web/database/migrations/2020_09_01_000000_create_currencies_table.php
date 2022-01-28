@@ -24,8 +24,10 @@ class CreateCurrenciesTable extends Migration
             $table->unsignedTinyInteger('type_id');
             $table->foreign('type_id')->references('id')->on('currency_types')->onDelete('cascade');
 
+            $table->unsignedTinyInteger('sort')->nullable();
             $table->boolean('status')->default('0');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

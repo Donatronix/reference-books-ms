@@ -48,7 +48,7 @@ class CurrencyType extends Model
      */
     protected $hidden = [
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
     /**

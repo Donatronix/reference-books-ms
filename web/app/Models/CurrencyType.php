@@ -20,7 +20,8 @@ class CurrencyType extends Model
      */
     const FIAT = 1;
     const CRYPTO = 2;
-    const VIRTUAL = 3;
+    const TOKEN = 3;
+    const VIRTUAL = 4;
 
     /**
      * Currency types array
@@ -30,6 +31,7 @@ class CurrencyType extends Model
     public static $types = [
         self::FIAT,
         self::CRYPTO,
+        self::TOKEN,
         self::VIRTUAL
     ];
 

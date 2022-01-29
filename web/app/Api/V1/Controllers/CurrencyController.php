@@ -56,7 +56,7 @@ class CurrencyController extends Controller
      *
      *     @OA\Parameter(
      *         name="type",
-     *         description="Currency type (fiat | crypto | virtual)",
+     *         description="Currency type (fiat | crypto | token | virtual)",
      *         in="query",
      *         required=false,
      *         @OA\Schema(

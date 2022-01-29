@@ -96,6 +96,56 @@ class CurrenciesTableSeeder extends Seeder
                 'status' => true
             ],
             [
+                'title' => 'UTTA Coin',
+                'code' => 'utta',
+                'symbol' => '',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 6,
+                'status' => false
+            ],
+            [
+                'title' => 'UTTA Token',
+                'code' => '$utta',
+                'symbol' => '',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::TOKEN,
+                'sort' => 1,
+                'status' => true
+            ],
+            [
+                'title' => 'DIVIT Token',
+                'code' => '$divit',
+                'symbol' => '',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::TOKEN,
+                'sort' => 2,
+                'status' => true
+            ],
+            [
+                'title' => 'SLAPA Token',
+                'code' => '$slapa',
+                'symbol' => '',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::TOKEN,
+                'sort' => 3,
+                'status' => true
+            ],
+            [
+                'title' => 'Synthetic SLAPA Token',
+                'code' => 's$slapa',
+                'symbol' => '',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::TOKEN,
+                'sort' => 4,
+                'status' => true
+            ],
+            [
                 'title' => 'Divits Credit',
                 'code' => 'dvc',
                 'symbol' => '',

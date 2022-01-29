@@ -16,21 +16,25 @@ class CurrencyTypesTableSeeder extends Seeder
     {
         //
         $list = [
-           CurrencyType::FIAT => [
-                'title' => 'Fiat money',
+            CurrencyType::FIAT => [
+                'title' => 'Fiat Money',
                 'code' => 'fiat'
             ],
-           CurrencyType::CRYPTO => [
-                'title' => 'Cryptocurrency',
+            CurrencyType::CRYPTO => [
+                'title' => 'Crypto Currency',
                 'code' => 'crypto'
             ],
-           CurrencyType::VIRTUAL => [
+            CurrencyType::TOKEN => [
+                'title' => 'Crypto Tokens',
+                'code' => 'token'
+            ],
+            CurrencyType::VIRTUAL => [
                 'title' => 'Virtual Currency',
                 'code' => 'virtual'
             ]
         ];
 
-        foreach ($list as $item){
+        foreach ($list as $item) {
             CurrencyType::create($item);
         }
     }

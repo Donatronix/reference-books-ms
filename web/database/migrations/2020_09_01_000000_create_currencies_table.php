@@ -16,7 +16,7 @@ class CreateCurrenciesTable extends Migration
         Schema::create('currencies', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('title', 100);
-            $table->string('code', 3);
+            $table->string('code', 7);
             $table->string('symbol', 7)->default('U+00A4');
             $table->binary('icon')->nullable();
             $table->float('rate',15,2)->unsigned();

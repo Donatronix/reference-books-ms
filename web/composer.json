@@ -45,20 +45,6 @@
             "options": {
                 "symlink": false
             }
-        },
-        {
-            "type": "path",
-            "url": "../pubsub",
-            "options": {
-                "symlink": false
-            }
-        },
-        {
-            "type": "path",
-            "url": "../json-api",
-            "options": {
-                "symlink": false
-            }
         }
     ],
     "scripts": {

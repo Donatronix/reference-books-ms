@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Repositories\CurrencyRepository;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
 
 /**
@@ -41,6 +42,7 @@ class GetCurrencies extends Command
      * Execute the console command.
      *
      * @return mixed
+     * @throws GuzzleException
      */
     public function handle()
     {

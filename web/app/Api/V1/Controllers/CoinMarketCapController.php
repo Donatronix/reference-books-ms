@@ -18,7 +18,7 @@ class CoinMarketCapController extends Controller
      * @return JsonResponse
      * @throws ReflectionException
      */
-    public static function index(Request $request): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $coinMarketCap = CurrencyExchange::getInstance('CoinMarketCap');
 

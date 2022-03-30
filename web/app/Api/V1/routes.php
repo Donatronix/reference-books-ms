@@ -6,7 +6,7 @@
 $router->group([
     'prefix' => env('APP_API_VERSION', ''),
     'namespace' => '\App\Api\V1\Controllers',
-    'middleware' => 'checkUser'
+    'middleware' => 'checkUser',
 ], function ($router) {
     /**
      * Currencies for clients
@@ -19,12 +19,20 @@ $router->group([
     });
 
     /**
+     * Currencies exchange rates from CoinMarketCap
+     */
+    $router->group(['prefix' => 'coinmarketcap'], function ($router) {
+        $router->get('/exchange-rates', 'CoinMarketCapController@index');
+
+    });
+
+    /**
      * ADMIN PANEL
      */
     $router->group([
         'prefix' => 'admin',
         'namespace' => 'Admin',
-        'middleware' => 'checkAdmin'
+        'middleware' => 'checkAdmin',
     ], function ($router) {
         /**
          * Currencies Admin Management
@@ -36,4 +44,3 @@ $router->group([
         });
     });
 });
-

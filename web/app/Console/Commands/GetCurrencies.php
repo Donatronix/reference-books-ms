@@ -167,10 +167,7 @@ class GetCurrencies extends Command
         $response = \App\Services\CurrencyExchange\CoinMarketCapExchange::getExchangeRate('USD');
 
 
-        $conversion = collect(json_decode($response->body(), true));
-
-//        $currencies = CurrencyRepository::getInstance()->findByCodes($codes);
-
+        $response = collect(json_decode($response->body(), true));
 
         $data = $response->data;
         $value = [

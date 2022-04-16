@@ -29,7 +29,6 @@ $router->group([
      */
     $router->group(['prefix' => 'coinmarketcap'], function ($router) {
         $router->get('/exchange-rates', 'CoinMarketCapController@index');
-
     });
 
     /**

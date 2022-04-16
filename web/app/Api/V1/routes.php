@@ -5,11 +5,22 @@
  */
 $router->group([
     'prefix' => env('APP_API_VERSION', ''),
-    'namespace' => '\App\Api\V1\Controllers',
-    'middleware' => 'checkUser',
+    'namespace' => '\App\Api\V1\Controllers'
 ], function ($router) {
     /**
-     * Internal access
+     * PUBLIC ACCESS
+     */
+    /**
+     * Currencies exchange rates from CoinMarketCap
+     */
+    $router->group([
+        'prefix' => 'coinmarketcap'
+    ], function ($router) {
+        $router->get('/exchange-rates', 'CoinMarketCapController@index');
+    });
+
+    /**
+     * PRIVATE ACCESS
      */
     $router->group([
         'middleware' => 'checkUser'
@@ -17,18 +28,13 @@ $router->group([
         /**
          * Currencies for clients
          */
-        $router->group(['prefix' => 'currencies'], function ($router) {
+        $router->group([
+            'prefix' => 'currencies'
+        ], function ($router) {
             $router->get('/', 'CurrencyController@index');
             $router->get('rate', 'CurrencyController@getRate');
             // $router->get('codes', 'CurrencyController@codes');
         });
-    });
-
-    /**
-     * Currencies exchange rates from CoinMarketCap
-     */
-    $router->group(['prefix' => 'coinmarketcap'], function ($router) {
-        $router->get('/exchange-rates', 'CoinMarketCapController@index');
     });
 
     /**
@@ -45,7 +51,9 @@ $router->group([
         /**
          * Currencies Admin Management
          */
-        $router->group(['prefix' => 'currencies'], function ($router) {
+        $router->group([
+            'prefix' => 'currencies'
+        ], function ($router) {
             $router->get('/', 'CurrencyController@index');
             $router->post('/', 'CurrencyController@store');
             $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');

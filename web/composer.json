@@ -6,7 +6,6 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "~7",
         "laravel/lumen-framework": "~8",
         "sumra/sdk": "*"
     },

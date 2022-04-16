@@ -72,7 +72,7 @@ class CurrencyController extends Controller
      *
      * @param Request $request
      *
-     * @return \Sumra\JsonApi\
+     * @return \Sumra\SDK\
      *
      * @throws \Exception
      */
@@ -200,7 +200,7 @@ class CurrencyController extends Controller
      *
      * @param Request $request
      *
-     * @return \Sumra\JsonApi\
+     * @return \Sumra\SDK\
      *
      * @throws \Exception
      */

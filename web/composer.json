@@ -6,18 +6,12 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "darkaonline/swagger-lume": "8.*",
-        "doctrine/dbal": "~3",
-        "flipbox/lumen-generator": "^9.1",
-        "fruitcake/laravel-cors": "^3.0",
-        "guzzlehttp/guzzle": "~7",
-        "laravel/lumen-framework": "~8",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "*"
+        "laravel/lumen-framework": "~8"
     },
     "require-dev": {
         "fakerphp/faker": "~1",
         "mockery/mockery": "~1",
-        "phpunit/phpunit": "dev-master"
+        "phpunit/phpunit": "~9"
     },
     "autoload": {
         "psr-4": {

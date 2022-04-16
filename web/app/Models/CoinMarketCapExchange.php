@@ -17,4 +17,11 @@ class CoinMarketCapExchange extends Model
     ];
 
     protected $table = 'coin_market_cap_exchanges';
+
+    protected $fillable = [
+        'symbol',
+        'coin_market_cap_id',
+        'price',
+        'last_updated',
+    ];
 }

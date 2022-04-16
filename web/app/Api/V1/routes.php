@@ -5,7 +5,8 @@
  */
 $router->group([
     'prefix' => env('APP_API_VERSION', ''),
-    'namespace' => '\App\Api\V1\Controllers'
+    'namespace' => '\App\Api\V1\Controllers',
+    'middleware' => 'checkUser',
 ], function ($router) {
     /**
      * Internal access
@@ -21,6 +22,14 @@ $router->group([
             $router->get('rate', 'CurrencyController@getRate');
             // $router->get('codes', 'CurrencyController@codes');
         });
+    });
+
+    /**
+     * Currencies exchange rates from CoinMarketCap
+     */
+    $router->group(['prefix' => 'coinmarketcap'], function ($router) {
+        $router->get('/exchange-rates', 'CoinMarketCapController@index');
+
     });
 
     /**
@@ -44,4 +53,3 @@ $router->group([
         });
     });
 });
-

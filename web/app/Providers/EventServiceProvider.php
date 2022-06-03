@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+use App\Listeners\ProductCreateListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         //
+        'ProductCreate' => [
+            ProductCreateListener::class,
+        ],
     ];
 
     /**

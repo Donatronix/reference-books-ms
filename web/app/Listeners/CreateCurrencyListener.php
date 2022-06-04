@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Currency;
+use App\Models\CurrencyType;
 
 class CreateCurrencyListener
 {
@@ -26,21 +27,19 @@ class CreateCurrencyListener
      */
     public function handle(array $inputData)
     {
-        Log::info($inputData);
         try {
 
-                $data = (object) $inputData;
+            $data = (object) $inputData;
 
-                // create notification
-                $this->createCurrency($data);
-
+            // create currency
+            $this->createCurrency($data);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
         }
     }
 
     /**
-     * Create Notification
+     * Create Currency
      *
      * @param $request
      * @return mixed
@@ -48,12 +47,21 @@ class CreateCurrencyListener
     private function createCurrency($data): mixed
     {
         try {
-            
-            Currency::create([
-                "order_id" => $data->id,
-                "product_id" => $data->product_id,
-                "currency_code" => $data->currency_code,
-            ]);
+            // check if currency already exists
+            $currency = Currency::where("code", $data->currency_code)->first();
+
+            if (!$currency) {
+                // create currency if it does not exist
+                Currency::create([
+                    "title" => $data->title,
+                    "code" => $data->currency_code,
+                    'symbol' => '',
+                    'rate' => 1,
+                    'type_id' => CurrencyType::CRYPTO,
+                ]);
+            } else {
+                Log::info("Currency already exists");
+            }
 
             return true;
         } catch (ModelNotFoundException $e) {

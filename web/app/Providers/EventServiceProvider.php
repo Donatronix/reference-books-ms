@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
-use App\Listeners\ProductCreateListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,10 +12,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        //
-        'ProductCreate' => [
-            ProductCreateListener::class,
+        'GetCurrencyRequest' => [
+            'App\Listeners\GetCurrencyRequestListener',
         ],
+        'CreateCurrency' => [
+            'App\Listeners\CreateCurrencyListener',
+        ]
     ];
 
     /**

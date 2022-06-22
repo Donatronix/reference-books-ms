@@ -8,10 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ReflectionException;
 
-
 class CoinMarketCapController extends Controller
 {
-
     /**
      * @param Request $request
      *
@@ -28,6 +26,4 @@ class CoinMarketCapController extends Controller
             'data' => $response,
         ], 200);
     }
-
-
 }

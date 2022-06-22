@@ -17,7 +17,6 @@ class CurrencyExchange
      */
     public static function getInstance($gateway): object
     {
-
         $class = '\App\Services\CurrencyExchange\\' . $gateway . 'Exchange';
         $reflector = new ReflectionClass($class);
 

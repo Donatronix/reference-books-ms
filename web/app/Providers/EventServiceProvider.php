@@ -14,7 +14,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'GetCurrencyRequest' => [
             'App\Listeners\GetCurrencyRequestListener',
-        ]
+        ],
+        //
+        'ProductCreate' => [
+            'App\Listeners\ProductCreateListener'
+        ],
     ];
 
     /**

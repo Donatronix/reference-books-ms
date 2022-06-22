@@ -15,6 +15,9 @@ class EventServiceProvider extends ServiceProvider
         'GetCurrencyRequest' => [
             'App\Listeners\GetCurrencyRequestListener',
         ],
+        'CreateCurrency' => [
+            'App\Listeners\CreateCurrencyListener',
+        ],
         //
         'ProductCreate' => [
             'App\Listeners\ProductCreateListener'

@@ -52,7 +52,7 @@ class Currency extends Model
         'symbol',
         'icon',
         'rate',
-        'type',
+        'type_id',
         'sort',
         'status'
     ];

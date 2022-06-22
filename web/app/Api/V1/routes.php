@@ -20,7 +20,7 @@ $router->group([
     });
 
     /**
-     * PRIVATE ACCESS
+     * USER APPLICATION ACCESS
      */
     $router->group([
         'middleware' => 'checkUser'
@@ -38,7 +38,7 @@ $router->group([
     });
 
     /**
-     * ADMIN PANEL
+     * ADMIN PANEL ACCESS
      */
     $router->group([
         'prefix' => 'admin',

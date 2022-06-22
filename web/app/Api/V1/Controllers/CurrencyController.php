@@ -7,6 +7,7 @@ use App\Models\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class CurrencyController
@@ -121,10 +122,10 @@ class CurrencyController extends Controller
             ], 404);
         }
 
-//            $mayorCurrencies = $this->repository->getDefaultCurrencies();
-//            $minorCurrencies = $this->repository->getMinorCurrencies();
-//            dd($mayorCurrencies, $minorCurrencies);
-//            return $mayorCurrencies->merge($minorCurrencies);
+        //$mayorCurrencies = $this->repository->getDefaultCurrencies();
+        //$minorCurrencies = $this->repository->getMinorCurrencies();
+        // dd($mayorCurrencies, $minorCurrencies);
+        //return $mayorCurrencies->merge($minorCurrencies);
     }
 
     /**

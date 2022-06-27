@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Notification;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 class ProductCreateListener
 {
@@ -21,17 +21,17 @@ class ProductCreateListener
     /**
      * Handle the event.
      *
-     * @param  array $data
+     * @param array $data
      * @return void
      */
     public function handle(array $inputData)
     {
         try {
 
-                $data = (object) $inputData;
+            $data = (object)$inputData;
 
-                // create notification
-                $this->createNotification($data);
+            // create notification
+            $this->createNotification($data);
 
         } catch (\Exception $e) {
             Log::info($e->getMessage());
@@ -47,7 +47,6 @@ class ProductCreateListener
     private function createNotification($data): mixed
     {
         try {
-            
             Notification::create([
                 "order_id" => $data->id,
                 "product_id" => $data->product_id,

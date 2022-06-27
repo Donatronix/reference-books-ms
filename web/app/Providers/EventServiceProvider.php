@@ -17,7 +17,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         'CreateCurrency' => [
             'App\Listeners\CreateCurrencyListener',
-        ]
+        ],
+        //
+        'ProductCreate' => [
+            'App\Listeners\ProductCreateListener'
+        ],
     ];
 
     /**

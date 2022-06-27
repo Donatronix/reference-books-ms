@@ -1,6 +1,7 @@
 {
     "name": "kus/reference-books-ms",
     "description": "Reference Books API Microservice",
+    "license": "MIT",
     "type": "project",
     "private": true,
     "require": {

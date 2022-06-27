@@ -2,7 +2,7 @@
 
 namespace App\Api\V1\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Api\V1\Controllers\Controller;
 use App\Models\Currency;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,7 +14,7 @@ use Sumra\SDK\Traits\Collection\CollectionItemsData;
 /**
  * Class CurrencyController
  *
- * @package App\Api\V1\Controllers
+ * @package App\Api\V1\Controllers\Admin
  */
 class CurrencyController extends Controller
 {

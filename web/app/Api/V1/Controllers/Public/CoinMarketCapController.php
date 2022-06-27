@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Public;
 
-use App\Http\Controllers\Controller;
+use App\Api\V1\Controllers\Controller;
 use App\Services\CurrencyExchange\CurrencyExchange;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

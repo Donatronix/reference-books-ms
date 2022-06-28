@@ -16,13 +16,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(CurrencyRepositoryContract::class, function(){
+        $this->app->singleton(CurrencyRepositoryContract::class, function () {
             return CurrencyRepository::getInstance();
         });
     }
 
     public function boot()
     {
-        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(199);
     }
 }

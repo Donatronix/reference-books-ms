@@ -64,7 +64,7 @@ class CoinMarketCapExchangeHistoryController extends Controller
     }
 
 
-    //Get Currencies
+    //Get Currencies and tregger request
     public function currencySymbols()
     {
         $response       = null;

@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 
+
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,8 +15,10 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
     public function run(): void
     {
+
         $this->call([
             /**
              * Currencies

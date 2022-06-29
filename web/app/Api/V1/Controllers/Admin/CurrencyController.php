@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Sumra\SDK\Traits\Collection\CollectionItemsData;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class CurrencyController
@@ -95,7 +96,6 @@ class CurrencyController extends Controller
                 ->paginate($request->get('limit', 20));
 
             $response = CollectionItemsData::transform($data, $columnsMap);
-
             return response()->jsonApi(array_merge(['success' => true], json_decode($data->toJson(), true)));
         } catch (\Exception $e) {
             return response()->jsonApi([
@@ -164,30 +164,34 @@ class CurrencyController extends Controller
         try {
             // Validate input
             $validator = Validator::make($request->all(), [
-                'title' => 'required|string|min:3',
-                'code' => 'required|string|size:3',
-                'symbol' => 'required|string|between:1,2',
-                'status' => 'sometimes|required|boolean'
+                'title'     => 'required|string|min:3',
+                'code'      => 'required|string|size:3',
+                'symbol'    => 'required|string|between:1,2',
+                'status'    => 'sometimes|required|boolean'
             ]);
-
-            if ($validator->fails()){
+            if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             }
-
             // Create currency model
             $currency = Currency::create($request->all());
-
+            $resp['type']       = "Success";
+            $resp['title']      = "Create currency";
+            $resp['message']    = "Create currecy";
+            $resp['data']       = $currency;
+            return response()->jsonApi($resp, 200);
+        } catch (ValidationException $e) {
             return response()->jsonApi([
-                'success' => true,
-                'data' => $currency
-            ]);
+                'type'      => 'warning',
+                'title'     => 'Create currency',
+                'message'   => 'Validation error',
+                'data'      => $e->getMessage()
+            ], 400);
         } catch (Exception $e) {
             return response()->jsonApi([
-                'success' => false,
-                'error' => [
-                    'title' => 'Currencies',
-                    'message' => $e->getMessage()
-                ]
+                'type'      => 'danger',
+                'title'     => 'Create currency',
+                'message'   => 'Error in creating currency',
+                'data'      => $e->getMessage()
             ], 412);
         }
     }

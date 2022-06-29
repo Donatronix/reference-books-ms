@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\CurrencyExchange;
+namespace App\Api\V1\Controllers;
 
 use Exception;
 use ReflectionClass;

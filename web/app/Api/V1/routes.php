@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @var Laravel\Lumen\Routing\Router $router
  */
@@ -59,4 +60,8 @@ $router->group([
             $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');
         });
     });
+
+
+    //Get Coin market cap exchange rate
+    $router->get('/currency-rate', 'CoinMarketCapExchangeHistoryController@currencySymbols');
 });

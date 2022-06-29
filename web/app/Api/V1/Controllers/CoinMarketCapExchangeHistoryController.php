@@ -13,50 +13,76 @@ use App\Models\Currency;
 class CoinMarketCapExchangeHistoryController extends Controller
 {
 
-    public function logCurrencyLatestRate($currencySymbol = null)
+    public function sendRequestToCoinMarketCap($crytoSymbols = 'btc')
     {
         $is_saved   = null;
+        $response   = null;
         $baseUrl    = "https://pro-api.coinmarketcap.com/";
-        $endpoint   = "cryptocurrency/listings/latest";
-        $response = Http:: //withoutVerifying()
-            withHeaders(
-                [
-                    "Authorization" => "ca2eb74a-459b-40cf-b36e-0e911ba3718c",
-                    "Cache-Control" => "no-cache",
-                    "Accepts" => "application/json",
-                    "X-CMC_PRO_API_KEY" => "ca2eb74a-459b-40cf-b36e-0e911ba3718c",
-                ]
-            )
-            ->withOptions(["verify" => false])
-            ->get($baseUrl . $endpoint, [
-                'start'         => '1',
-                'limit'         => '20',
-                'convert'       => $currencySymbol
-            ]);
+        $endpoint   = "v1/cryptocurrency/price-performance-stats/latest";
 
-        if ($response) {
-            $is_saved = History::create([
-                'currency'  => $currencySymbol,
-                'rate'      => $response->data->quote->$currencySymbol->price,
-                'time'      => $response->last_updated,
-                'provider'  => 'coinmarketcap.com',
-                'data'      => $response['data'],
-            ]);
+        try {
+            $response = Http::withoutVerifying()
+                ->withHeaders(
+                    [
+                        "Authorization" => "ca2eb74a-459b-40cf-b36e-0e911ba3718c",
+                        "Cache-Control" => "no-cache",
+                        "Accepts" => "application/json",
+                        "X-CMC_PRO_API_KEY" => "ca2eb74a-459b-40cf-b36e-0e911ba3718c",
+                    ]
+                )
+                ->withOptions(["verify" => false])
+                ->get($baseUrl . $endpoint, [
+                    'start'         => '1',
+                    'limit'         => '100',
+                    'time_period'   => '24h',
+                    'symbol'        => $crytoSymbols,
+                ]);
+            //log response
+            $this->logHistory($response);
+        } catch (\Throwable $e) {
+            $response = $e->getMessage();
         }
-        return $is_saved;
+        return $response;
     }
 
-    //Get Currencies
-    public function currencyRate()
+
+    //log history
+    public function logHistory($data = [])
     {
-        $allCurrencies = Currency::where('type_id', 2)
-            //->where('type.code', 'crypto')
-            ->get(['code as currency_code']);
-        if ($allCurrencies) {
-            foreach ($allCurrencies as $value) {
-                $this->logCurrencyLatestRate($value->currency_code);
+        if ($data) {
+            foreach ($data as $value) {
+                $is_saved = History::create([
+                    'name'      => $value->name,
+                    'currency'  => $value->symbol,
+                    'rate'      => $value->periods->quote->price_change,
+                    'time'      => $value->last_updated,
+                    'provider'  => 'coinmarketcap.com',
+                    'data'      => $value,
+                ]);
             }
         }
-        return $allCurrencies;
+    }
+
+
+    //Get Currencies
+    public function currencySymbols()
+    {
+        $response       = null;
+        $getAllSymbols  = null;
+        $currencyArray  = [];
+        try {
+            $allCurrencies = Currency::where('type_id', 2)->get(['code as currency_code']);
+            if ($allCurrencies) {
+                foreach ($allCurrencies as $value) {
+                    $currencyArray[] = $value->currency_code; //get all currencies symbols
+                }
+                $getAllSymbols = implode(', ', $currencyArray); //add comman
+                $response = $this->sendRequestToCoinMarketCap($getAllSymbols); //send an API request
+            }
+        } catch (\Throwable $e) {
+            $response = $e->getMessage();
+        }
+
+        return $response;
     }
 }

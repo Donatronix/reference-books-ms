@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
-use App\Api\V1\Controllers\CoinMarketCapExchangeHistoryController;
 
 
 
@@ -17,15 +16,6 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
 
-
-    // public function makeReq()
-    // {
-    //     $capRate = new CoinMarketCapExchangeHistoryController;
-
-    //     $response = $capRate->currencyRate();
-    //     return $response;
-    // }
-
     public function run(): void
     {
 
@@ -35,8 +25,6 @@ class DatabaseSeeder extends Seeder
              */
             CurrencyTypesTableSeeder::class,
             CurrenciesTableSeeder::class
-
-            //$this->makeReq(),
         ]);
 
 

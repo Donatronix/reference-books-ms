@@ -18,6 +18,7 @@ class CreateCoinMarketCapExchangeHistoriesTable extends Migration
             $table->string('currency')->nullable();
             $table->string('rate')->nullable();
             $table->string('time')->nullable();
+            $table->string('coin_market_cap_id')->nullable();
             $table->string('provider')->nullable();
             $table->string('data')->nullable();
             $table->timestamps();

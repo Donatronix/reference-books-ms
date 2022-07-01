@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Services;
 
 use Exception;
 use ReflectionClass;

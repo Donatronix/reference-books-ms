@@ -8,6 +8,11 @@ use Illuminate\Http\Client\Response;
 interface CurrencyExchangeContract
 {
     /**
+     * @return string
+     */
+    public static function providerName(): String;
+
+    /**
      * @return string[]
      */
     public static function getHttpHeaders(): array;

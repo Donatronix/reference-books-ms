@@ -63,5 +63,5 @@ $router->group([
 
 
     //Get Coin market cap exchange rate
-    $router->get('/currency-rate', 'CoinMarketCapExchangeHistoryController@currencySymbols');
+    $router->get('/currency-rate', 'LogExchangeRateController@index');
 });

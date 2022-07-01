@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Application;
 
+use App\Api\V1\Controllers\Controller;
 use App\Contracts\CurrencyRepositoryContract;
 use App\Models\Currency;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Class CurrencyController
  *
- * @package App\Api\V1\Controllers
+ * @package App\Api\V1\Controllers\Application
  */
 class CurrencyController extends Controller
 {

@@ -15,15 +15,17 @@ $router->group([
      * Currencies exchange rates from CoinMarketCap
      */
     $router->group([
+        'namespace' => 'Public',
         'prefix' => 'coinmarketcap'
     ], function ($router) {
         $router->get('/exchange-rates', 'CoinMarketCapController@index');
     });
 
     /**
-     * USER APPLICATION ACCESS
+     * APPLICATION ACCESS
      */
     $router->group([
+        'namespace' => 'Application',
         'middleware' => 'checkUser'
     ], function ($router) {
         /**

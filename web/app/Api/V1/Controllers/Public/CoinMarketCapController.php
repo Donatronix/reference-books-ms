@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Public;
 
-use App\Http\Controllers\Controller;
-use App\Api\V1\Controllers\CurrencyExchange;
+use App\Api\V1\Controllers\Controller;
+use App\Services\CurrencyExchange\CurrencyExchange;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use ReflectionException;
@@ -18,22 +18,12 @@ class CoinMarketCapController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        try {
-            $coinMarketCap          = CurrencyExchange::getInstance('CoinMarketCap');
-            $currencyExchangeRate   = $coinMarketCap->getExchangeRate($request->currency);
-            return response()->jsonApi([
-                'type'      => 'success',
-                'title'     => 'Get Coin Market Cap',
-                'message'   => "Get Coin Market Cap",
-                'data'      => $currencyExchangeRate
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->jsonApi([
-                'type'      => 'danger',
-                'title'     => 'Get Coin Market Cap',
-                'message'   => $e->getMessage(),
-                'data'      => []
-            ], 400);
-        }
+        $coinMarketCap = CurrencyExchange::getInstance('CoinMarketCap');
+
+        $response = $coinMarketCap->getExchangeRate($request->currency);
+
+        return response()->json([
+            'data' => $response,
+        ], 200);
     }
 }

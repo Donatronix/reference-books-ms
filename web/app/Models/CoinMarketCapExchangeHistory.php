@@ -11,13 +11,15 @@ class CoinMarketCapExchangeHistory extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public static string $BASE_URL = 'https://pro-api.coinmarketcap.com';
+
     protected $fillable = [
         'currency',
         'rate',
         'time',
+        'coin_market_cap_id',
         'provider',
         'data',
-
     ];
 
     protected $hidden = [

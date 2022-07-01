@@ -15,17 +15,15 @@ $router->group([
      * Currencies exchange rates from CoinMarketCap
      */
     $router->group([
-        'namespace' => 'Public',
         'prefix' => 'coinmarketcap'
     ], function ($router) {
         $router->get('/exchange-rates', 'CoinMarketCapController@index');
     });
 
     /**
-     * APPLICATION ACCESS
+     * USER APPLICATION ACCESS
      */
     $router->group([
-        'namespace' => 'Application',
         'middleware' => 'checkUser'
     ], function ($router) {
         /**
@@ -65,5 +63,10 @@ $router->group([
 
 
     //Get Coin market cap exchange rate
-    $router->get('/currency-rate', 'LogExchangeRateController@index');
+    $router->group([
+        'namespace' => 'Public',
+        'prefix' => 'currency/exchange'
+    ], function ($router) {
+        $router->get('/rate', 'CoinMarketCapExchangeHistoryController@index');
+    });
 });

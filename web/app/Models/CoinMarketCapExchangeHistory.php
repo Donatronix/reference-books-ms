@@ -15,6 +15,7 @@ class CoinMarketCapExchangeHistory extends Model
 
     protected $fillable = [
         'currency',
+        'currency_name',
         'rate',
         'time',
         'coin_market_cap_id',

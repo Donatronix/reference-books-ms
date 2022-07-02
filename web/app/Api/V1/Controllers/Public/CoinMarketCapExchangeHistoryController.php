@@ -16,22 +16,24 @@ class CoinMarketCapExchangeHistoryController extends Controller
     //tregger request to coinmarketcap.com
     public function index()
     {
-        $response = [];
+        $response = null;
+        $log = [];
         try {
             //Get all currencies
             $getStringCurrencies = $this->currencySymbols(1);
+
             //Send request
             foreach ($getStringCurrencies as $currency) {
                 $response = CoinMarketCapExchange::getExchangeRate($currency->currency_code); //'usd', 'EUR', 'UAH'
+                //Get Provider name
+                $provider = CoinMarketCapExchange::providerName();
+                //log request
+                $log[] = $this->logHistory($response, $provider);
             }
-            //Get Provider name
-            $provider = CoinMarketCapExchange::providerName();
-            //log request
-            $log = $this->logHistory($response, $provider);
             return response()->jsonApi([
                 'type'      => 'success',
                 'title'     => 'Get Coin Market Cap',
-                'message'   => "Get Coin Market Cap",
+                'message'   => "Successfully get Coin Market Cap exchange rate",
                 'data'      => $log
             ], 200);
         } catch (\Exception $e) {
@@ -67,21 +69,32 @@ class CoinMarketCapExchangeHistoryController extends Controller
     {
         $rate = [];
         $time = [];
+        $is_saved = [];
         if ($response) {
-            foreach ($response['data'] as $value) {
-                foreach ($value['quote'] as $val) {
-                    $rate[] = $val['price'];
-                    $time[] = $val['last_updated'];
+            try {
+                foreach ($response['data'] as $value) {
+                    foreach ($value['quote'] as $val) {
+                        $rate[] = (isset($val['price']) ? $val['price'] : '0');
+                        $time[] = (isset($val['last_updated']) ? $val['last_updated'] : '');
+                    }
+                    $is_saved = History::create([
+                        'currency_name'     => $value['name'],
+                        'currency'          => $value['symbol'],
+                        'rate'              => $rate[0],
+                        'time'              => $time[0],
+                        'provider'          => $provider,
+                        'data'              => $response,
+                    ]);
                 }
-                $is_saved = History::create([
-                    'name'      => $value['name'],
-                    'currency'  => $value['symbol'],
-                    'rate'      => $rate[0],
-                    'time'      => $time[0],
-                    'provider'  => $provider,
-                    'data'      => $response['data'],
-                ]);
+            } catch (\Exception $e) {
+                return response()->jsonApi([
+                    'type'      => 'danger',
+                    'title'     => 'Error occurred when Logging Coin Market Cap exchange rate',
+                    'message'   => $e->getMessage(),
+                    'data'      => []
+                ], 400);
             }
         }
+        return $is_saved;
     }
 }

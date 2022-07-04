@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
     {
         // Run
         $schedule->command('currencies:create')
-            //->hourly();
-            ->everyMinute();
+            ->hourly();
+        //->everyMinute();
         //->runInBackground();
         //->emailOutputTo('support@ultainfinity.com');
     }

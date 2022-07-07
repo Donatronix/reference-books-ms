@@ -35,6 +35,16 @@ $router->group([
             $router->get('rate', 'CurrencyController@getRate');
             // $router->get('codes', 'CurrencyController@codes');
         });
+
+
+        /**
+         * Tokens
+         */
+        $router->group([
+            'prefix' => 'tokens'
+        ], function ($router) {
+            $router->get('/', 'Admin\TokenController@index');
+        });
     });
 
     /**
@@ -57,6 +67,18 @@ $router->group([
             $router->get('/', 'CurrencyController@index');
             $router->post('/', 'CurrencyController@store');
             $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');
+        });
+
+        /**
+         * Token Management
+         */
+        $router->group([
+            'prefix' => 'tokens'
+        ], function ($router) {
+            $router->get('/', 'TokenController@index');
+            $router->post('/', 'TokenController@store');
+            $router->put('{id}', 'TokenController@update');
+            $router->delete('{id}', 'TokenController@destroy');
         });
     });
 });

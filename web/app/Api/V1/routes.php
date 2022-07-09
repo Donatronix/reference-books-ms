@@ -21,7 +21,7 @@ $router->group([
     });
 
     /**
-     * APPLICATION ACCESS
+     * USER APPLICATION ACCESS
      */
     $router->group([
         'namespace' => 'Application',
@@ -65,4 +65,12 @@ $router->group([
 
     //Get Coin market cap exchange rate
     $router->get('/currency-rate', 'LogExchangeRateController@index');
+
+    //Get Coin market cap exchange rate
+    $router->group([
+        'namespace' => 'Public',
+        'prefix' => 'currency/exchange'
+    ], function ($router) {
+        $router->get('/rate', 'CoinMarketCapExchangeHistoryController@index');
+    });
 });

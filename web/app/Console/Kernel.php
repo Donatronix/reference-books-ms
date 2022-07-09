@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\GetCurrencies;
+use App\Console\Commands\GetCurrencyExchangeRate;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        GetCurrencies::class
+        //GetCurrencies::class,
+        Commands\GetCurrencyExchangeRate::class
     ];
 
     /**
@@ -26,10 +27,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // Run
-        $schedule->command('currencies:update')
-            ->hourly()
-            ->runInBackground()
-            ->emailOutputTo('support@ultainfinity.com');
+        $schedule->command('currencies:create')
+            ->hourly();
+        //->everyMinute();
+        //->runInBackground();
+        //->emailOutputTo('support@ultainfinity.com');
     }
 
     /**

@@ -26,18 +26,14 @@ class CoinMarketCapExchange implements CurrencyExchangeContract
 
         $baseUrl    = \App\Models\CoinMarketCapExchangeHistory::$BASE_URL;
         $endPoint = '/v2/tools/price-conversion';
-        //$endPoint   = "/v1/cryptocurrency/price-performance-stats/latest";
         $response = Http::acceptJson()
             ->withoutVerifying()
             ->withHeaders(self::getHttpHeaders())
             ->withOptions(["verify" => false])
             ->get($baseUrl . $endPoint, [
-                'start'         => '1',
-                'limit'         => '5000',
                 'amount'        => '1',
-                'id'            => '1',
-                'time_period'   => '24h',
-                'symbol'        => $currency
+                'symbol'        => $currency,
+                'convert'       => 'USD'
             ]);
         return $response;
     }
@@ -47,7 +43,7 @@ class CoinMarketCapExchange implements CurrencyExchangeContract
      */
     public static function getHttpHeaders(): array
     {
-        $bearerToken = 'ca2eb74a-459b-40cf-b36e-0e911ba3718c'; //env('COIN_MARKET_CAP_API_KEY', 'ca2eb74a-459b-40cf-b36e-0e911ba3718c');
+        $bearerToken = env('COIN_MARKET_CAP_API_KEY', 'ca2eb74a-459b-40cf-b36e-0e911ba3718c');
         $headers = [
             "Authorization"     => "Bearer {$bearerToken}",
             "Cache-Control"     => "no-cache",

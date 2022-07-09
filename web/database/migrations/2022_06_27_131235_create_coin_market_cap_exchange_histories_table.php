@@ -16,11 +16,12 @@ class CreateCoinMarketCapExchangeHistoriesTable extends Migration
         Schema::create('coin_market_cap_exchange_histories', function (Blueprint $table) {
             $table->id();
             $table->string('currency')->nullable();
+            $table->text('currency_name')->nullable();
             $table->string('rate')->nullable();
             $table->string('time')->nullable();
             $table->string('coin_market_cap_id')->nullable();
             $table->string('provider')->nullable();
-            $table->string('data')->nullable();
+            $table->longText('data')->nullable();
             $table->timestamps();
         });
     }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 
-class TokenController extends Controller
+class CurrencySettingController extends Controller
 {
 
     /**
@@ -24,9 +24,9 @@ class TokenController extends Controller
      * Display a listing of the users
      *
      * @OA\Get(
-     *     path="/tokens",
-     *     description="Get all Tokens",
-     *     tags={"Ultainfinity | Tokens "},
+     *     path="/currencies/settings",
+     *     description="Get all CS",
+     *     tags={"Admin | Currencies Setting "},
      *
      *     security={{
      *         "default": {

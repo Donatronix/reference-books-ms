@@ -74,4 +74,14 @@ class Currency extends Model
     {
         return $this->belongsTo(CurrencyType::class);
     }
+
+    /**
+     * Get the setting that owns the Currency
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function setting()
+    {
+        return $this->belongsTo(CurrencySetting::class);
+    }
 }

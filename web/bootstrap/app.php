@@ -120,7 +120,6 @@ $app->register(\SwaggerLume\ServiceProvider::class);
  */
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
-
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

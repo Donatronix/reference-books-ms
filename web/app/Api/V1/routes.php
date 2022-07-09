@@ -9,7 +9,14 @@ $router->group([
 ], function ($router) {
     /**
      * PUBLIC ACCESS
+     *
+     * level with free access to the endpoint
      */
+    $router->group([
+        'namespace' => 'Public'
+    ], function ($router) {
+        //
+    });
     /**
      * Currencies exchange rates from CoinMarketCap
      */
@@ -21,7 +28,9 @@ $router->group([
     });
 
     /**
-     * USER APPLICATION ACCESS
+     * USER APPLICATION PRIVATE ACCESS
+     *
+     * Application level for users
      */
     $router->group([
         'namespace' => 'Application',
@@ -41,6 +50,8 @@ $router->group([
 
     /**
      * ADMIN PANEL ACCESS
+     *
+     * Admin / super admin access level (E.g CEO company)
      */
     $router->group([
         'prefix' => 'admin',
@@ -62,7 +73,6 @@ $router->group([
         });
     });
 
-
     //Get Coin market cap exchange rate
     $router->get('/currency-rate', 'LogExchangeRateController@index');
 
@@ -72,5 +82,17 @@ $router->group([
         'prefix' => 'currency/exchange'
     ], function ($router) {
         $router->get('/rate', 'CoinMarketCapExchangeHistoryController@index');
+    });
+
+    /**
+     * WEBHOOKS
+     *
+     * Access level of external / internal software services
+     */
+    $router->group([
+        'prefix' => 'webhooks',
+        'namespace' => 'Webhooks'
+    ], function ($router) {
+        //
     });
 });

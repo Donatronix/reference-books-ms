@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoinMarketCapExchangeHistoriesTable extends Migration
+class CreateExchangeRatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,17 @@ class CreateCoinMarketCapExchangeHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coin_market_cap_exchange_histories', function (Blueprint $table) {
+        Schema::create('exchange_rates', function (Blueprint $table) {
             $table->id();
             $table->string('currency')->nullable();
             $table->text('currency_name')->nullable();
+
+            $table->string('symbol');
+            $table->string('coin_market_cap_id');
+            $table->string('price');
+            $table->timestamp('last_updated');
+
+
             $table->string('rate')->nullable();
             $table->string('time')->nullable();
             $table->string('coin_market_cap_id')->nullable();
@@ -33,6 +40,6 @@ class CreateCoinMarketCapExchangeHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coin_market_cap_exchange_histories');
+        Schema::dropIfExists('exchange_rates');
     }
 }

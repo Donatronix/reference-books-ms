@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\CoinMarketCapExchange;
+use App\Models\ExchangeRate;
 use App\Repositories\CurrencyRepository;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Console\Command;
@@ -177,7 +177,7 @@ class GetCurrencies extends Command
             'last_updated' => $data->last_updated,
         ];
 
-        CoinMarketCapExchange::updateOrCreate([
+        ExchangeRate::updateOrCreate([
             'symbol' => $data->symbol,
             'coin_market_cap_id' => $data->id,
         ], $value);
@@ -190,7 +190,7 @@ class GetCurrencies extends Command
                 'price' => $data->quote->$currency->price,
                 'last_updated' => $data->last_updated,
             ];
-            CoinMarketCapExchange::updateOrCreate([
+            ExchangeRate::updateOrCreate([
                 'symbol' => $currency,
                 'coin_market_cap_id' => $data->id], $value);
         }

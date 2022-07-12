@@ -6,12 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CoinMarketCapExchangeHistory extends Model
+class ExchangeRate extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     public static string $BASE_URL = 'https://pro-api.coinmarketcap.com';
+
+    public static array $CURRENCIES = [
+        'USD',
+        'EUR',
+        'SOL',
+        'BTC',
+        'ETH',
+    ];
+
+    protected $table = 'exchange_rates';
 
     protected $fillable = [
         'currency',
@@ -21,6 +31,10 @@ class CoinMarketCapExchangeHistory extends Model
         'coin_market_cap_id',
         'provider',
         'data',
+        'symbol',
+        'coin_market_cap_id',
+        'price',
+        'last_updated',
     ];
 
     protected $hidden = [

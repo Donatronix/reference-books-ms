@@ -36,6 +36,7 @@ $router->group([
         'namespace' => 'Application',
         'middleware' => 'checkUser'
     ], function ($router) {
+
         /**
          * Currencies for clients
          */
@@ -44,8 +45,18 @@ $router->group([
         ], function ($router) {
             $router->get('/', 'CurrencyController@index');
             $router->get('rate', 'CurrencyController@getRate');
-            // $router->get('codes', 'CurrencyController@codes');
+            $router->get('tokens', 'CurrencyController@tokens');
         });
+
+
+        /**
+         * Tokens
+         */
+        // $router->group([
+        //     'prefix' => 'tokens'
+        // ], function ($router) {
+        //     $router->get('/', 'Admin\CurrencySettingController@index');
+        // });
     });
 
     /**
@@ -70,6 +81,17 @@ $router->group([
             $router->get('/', 'CurrencyController@index');
             $router->post('/', 'CurrencyController@store');
             $router->post('/{id:[\d]+}/update-status', 'CurrencyController@updateStatus');
+
+            /**
+             * Settings
+             *
+             */
+            $router->group(['prefix' => 'settings'], function ($router) {
+                $router->get('/', 'CurrencySettingController@index');
+                $router->post('/', 'CurrencySettingController@store');
+                $router->put('{id}', 'CurrencySettingController@update');
+                $router->delete('{id}', 'CurrencySettingController@destroy');
+            });
         });
     });
 

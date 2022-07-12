@@ -5,6 +5,7 @@ namespace App\Api\V1\Controllers\Application;
 use App\Api\V1\Controllers\Controller;
 use App\Contracts\CurrencyRepositoryContract;
 use App\Models\Currency;
+use App\Models\CurrencyType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -238,6 +239,51 @@ class CurrencyController extends Controller
         return response()->json([
             'success' => true,
             'codes' => Currency::codes()
+        ], 200);
+    }
+
+
+    /**
+     * Method for getting Tokens
+     *
+     * @OA\Get(
+     *     path="/currencies/tokens",
+     *     description="Get only Tokens",
+     *     tags={"Currencies"},
+     *
+     *     security={{
+     *         "default": {
+     *             "ManagerRead",
+     *             "User",
+     *             "ManagerWrite"
+     *         }
+     *     }},
+     *     x={
+     *         "auth-type": "Application & Application User",
+     *         "throttling-tier": "Unlimited",
+     *         "wso2-application-security": {
+     *             "security-types": {"oauth2"},
+     *             "optional": "false"
+     *         }
+     *     },
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function tokens()
+    {
+        $tokens = Currency::where('type', CurrencyType::TOKEN)
+            ->with('setting')->get();
+
+        return response()->jsonApi([
+            'type' => 'success',
+            'title' => 'Get Tokens',
+            'message' => 'Tokens list',
+            'data' => $tokens
         ], 200);
     }
 }

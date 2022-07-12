@@ -61,6 +61,7 @@ class Currency extends Model
      * @var string[]
      */
     protected $hidden = [
+        'type_id',
         'created_at',
         'updated_at',
         'deleted_at'
@@ -72,5 +73,15 @@ class Currency extends Model
     public function type()
     {
         return $this->belongsTo(CurrencyType::class);
+    }
+
+    /**
+     * Get the setting that owns the Currency
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function setting()
+    {
+        return $this->belongsTo(CurrencySetting::class);
     }
 }

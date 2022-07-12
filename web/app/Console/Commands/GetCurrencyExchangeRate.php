@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Api\V1\Controllers\Public\CoinMarketCapExchangeHistoryController;
+use App\Api\V1\Controllers\Public\ExchangeRate;
 
 class GetCurrencyExchangeRate extends Command
 {
@@ -39,7 +39,7 @@ class GetCurrencyExchangeRate extends Command
     public function handle()
     {
         //Make an API Call to coinMarketCap and log the exchange rate to History.
-        $getMethod = new CoinMarketCapExchangeHistoryController;
+        $getMethod = new ExchangeRate;
         $getMethod->index();
     }
 }

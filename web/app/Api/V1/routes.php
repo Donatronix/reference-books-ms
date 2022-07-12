@@ -103,7 +103,7 @@ $router->group([
         'namespace' => 'Public',
         'prefix' => 'currency/exchange'
     ], function ($router) {
-        $router->get('/rate', 'CoinMarketCapExchangeHistoryController@index');
+        $router->get('/rate', 'ExchangeRate@index');
     });
 
     /**

@@ -24,7 +24,7 @@ class CoinMarketCapExchange implements CurrencyExchangeContract
     public static function getExchangeRate($currency = null): Response
     {
 
-        $baseUrl    = \App\Models\CoinMarketCapExchangeHistory::$BASE_URL;
+        $baseUrl    = \App\Models\ExchangeRate::$BASE_URL;
         $endPoint = '/v2/tools/price-conversion';
         $response = Http::acceptJson()
             ->withoutVerifying()

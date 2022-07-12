@@ -2,16 +2,12 @@
 
 namespace App\Api\V1\Controllers\Public;
 
-use Illuminate\Http\Request;
 use App\Api\V1\Controllers\Controller;
-use App\Models\CoinMarketCapExchangeHistory as History;
-use Illuminate\Http\JsonResponse;
+use App\Models\ExchangeRate as History;
 use App\Services\CurrencyExchange\CoinMarketCapExchange;
 use App\Models\Currency;
 
-
-
-class CoinMarketCapExchangeHistoryController extends Controller
+class ExchangeRate extends Controller
 {
     //tregger request to coinmarketcap.com
     public function index()
@@ -46,7 +42,6 @@ class CoinMarketCapExchangeHistoryController extends Controller
         }
     }
 
-
     //Get all Currencies
     public function currencySymbols($currency_type_id = 2)
     {
@@ -61,8 +56,6 @@ class CoinMarketCapExchangeHistoryController extends Controller
         // }
         return $allCurrencies; //$getAllSymbols;
     }
-
-
 
     //log history
     public function logHistory($response = [], $provider = null)

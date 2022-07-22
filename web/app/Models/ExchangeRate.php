@@ -42,4 +42,8 @@ class ExchangeRate extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function getResponseAttribute($res){
+        return json_decode($res);
+    }
 }

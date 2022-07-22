@@ -7,7 +7,7 @@ use App\Models\ExchangeRate as History;
 use App\Services\CurrencyExchange\CoinMarketCapExchange;
 use App\Models\Currency;
 
-class ExchangeRate extends Controller
+class ExchangeRateController extends Controller
 {
     //tregger request to coinmarketcap.com
     public function index()
@@ -16,7 +16,11 @@ class ExchangeRate extends Controller
         $log = [];
         try {
             //Get all currencies
-            $getStringCurrencies = $this->currencySymbols(1);
+            $getStringCurrencies = $this->getAllCurrencies();
+            // $getStringCurrencies = $this->currencySymbols(1);
+
+            // clear old rates
+            History::truncate();
 
             //Send request
             foreach ($getStringCurrencies as $currency) {
@@ -57,6 +61,13 @@ class ExchangeRate extends Controller
         return $allCurrencies; //$getAllSymbols;
     }
 
+    //Get all Currencies
+    public function getAllCurrencies()
+    {
+        $allCurrencies = Currency::get(['code as currency_code']);
+        return $allCurrencies;
+    }
+
     //log history
     public function logHistory($response = [], $provider = null)
     {
@@ -76,7 +87,8 @@ class ExchangeRate extends Controller
                         'rate'              => $rate[0],
                         'time'              => $time[0],
                         'provider'          => $provider,
-                        'data'              => $response,
+                        'data'              => json_encode($response),
+                        'symbol'            => $value['symbol']
                     ]);
                 }
             } catch (\Exception $e) {

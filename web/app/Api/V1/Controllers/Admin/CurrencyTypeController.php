@@ -4,6 +4,7 @@ namespace App\Api\V1\Controllers\Admin;
 
 use App\Api\V1\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\CurrencyType;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -17,17 +18,17 @@ use Illuminate\Validation\ValidationException;
  *
  * @package App\Api\V1\Controllers\Admin
  */
-class CurrencyController extends Controller
+class CurrencyTypeController extends Controller
 {
 
     /**
-     * Method for list of currencies
+     * Method to delete currency type
      *
-     * @OA\Get(
-     *     path="/admin/currencies",
+     * @OA\delete(
+     *     path="/admin/currencyType",
      *     summary="Show list of currencies",
      *     description="Show list of currencies",
-     *     tags={"Admin / Currencies"},
+     *     tags={"Admin / Currency type"},
      *
      *     security={{
      *         "default": {
@@ -47,16 +48,6 @@ class CurrencyController extends Controller
      *              default = 20,
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         description="page of list",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default=1,
-     *         )
-     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="Success",
@@ -69,26 +60,16 @@ class CurrencyController extends Controller
      *
      * @throws \Exception
      */
-    public function index(Request $request): JsonResponse
+    public function destroy($id)
     {
         try {
-            $columnsMap = [
-                'id' => 'ID',
-                'title' => 'Title',
-                'code' => 'Code',
-                'symbol' => 'Symbol',
-                'rate' => 'Currency Rate',
-                'type' => 'Currency Type',
-                'sort' => 'Sort',
-                'status' => 'Status'
-            ];
-
-            $data = Currency::select(array_keys($columnsMap))
-                ->orderBy('title', 'asc')
-                ->paginate($request->get('limit', 20));
-
-            $response = CollectionItemsData::transform($data, $columnsMap);
-            return response()->jsonApi(array_merge(['success' => true], json_decode($data->toJson(), true)));
+            $type = CurrencyType::findOrFail($id);
+            $type->delete();
+            return response()->jsonApi([
+                'type' => 'success',
+                'title' => 'Delete a currency type',
+                'message' => 'Currency type Deleted'
+            ], 200);
         } catch (\Exception $e) {
             return response()->jsonApi([
                 'type' => 'danger',
@@ -99,13 +80,13 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Method for create currency
+     * Method for create currency type
      *
      * @OA\Post(
-     *     path="/admin/currencies",
+     *     path="/admin/currencyType",
      *     summary="Create currency",
      *     description="Create currency",
-     *     tags={"Admin / Currencies"},
+     *     tags={"Admin / Currency type"},
      *
      *     security={{
      *         "default": {
@@ -121,18 +102,27 @@ class CurrencyController extends Controller
      *         required=true,
      *         in="path",
      *         @OA\Schema(
-     *              type="strigng"
+     *              type="string"
      *         )
      *     ),
-     *     @OA\Parameter(
-     *         name="status",
-     *         description="Currency status. Types of statuses: Active = 1, Inactive = 0",
-     *         required=true,
-     *         in="query",
-     *         @OA\Schema(
-     *              type="integer"
-     *         )
-     *     ),
+
+     *     @OA\RequestBody(
+    *            @OA\JsonContent(
+    *                type="object",
+    *                @OA\Property(
+    *                    property="title",
+    *                    type="string",
+    *                    description="title",
+    *                    example="title"
+    *                ),
+    *                @OA\Property(
+    *                    property="code",
+    *                    type="string",
+    *                    description="code",
+    *                    example="code"
+    *                ),
+    *           ),
+    *       ),
      *     @OA\Response(
      *         response="200",
      *         description="Success"
@@ -148,22 +138,18 @@ class CurrencyController extends Controller
         try {
             // Validate input
             $validator = Validator::make($request->all(), [
-                'title'     => 'required|string|min:3',
-                'code'      => 'required|string|size:3',
-                'symbol'    => 'required|string|between:1,2',
-                'status'    => 'sometimes|required|boolean',
-                'rate'      => 'required|numeric',
-                'type_id'   => 'required|integer'
+                'title'     => 'required|string',
+                'code'      => 'required|string',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             }
             // Create currency model
-            $currency = Currency::create($request->all());
+            $currencyType = CurrencyType::create($request->all());
             $resp['type']       = "Success";
             $resp['title']      = "Create currency";
             $resp['message']    = "Create currecy";
-            $resp['data']       = $currency;
+            $resp['data']       = $currencyType;
             return response()->jsonApi($resp, 200);
         } catch (ValidationException $e) {
             return response()->jsonApi([
@@ -183,13 +169,13 @@ class CurrencyController extends Controller
     }
 
     /**
-     * Method for update status of currency
+     * Method for update of currency type
      *
-     * @OA\Patch(
-     *     path="/admin/currencies/{id}/update-status",
+     * @OA\Put(
+     *     path="/admin/currencyType/{id}/update-status",
      *     summary="Update status of currency",
      *     description="Update status of currency",
-     *     tags={"Admin / Currencies"},
+     *     tags={"Admin / Currency type"},
      *
      *     security={{
      *         "default": {
@@ -198,16 +184,7 @@ class CurrencyController extends Controller
      *             "ManagerWrite"
      *         }
      *     }},
-     *
-     *     @OA\Parameter(
-     *         name="id",
-     *         description="Currency id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(
-     *              type="integer"
-     *         )
-     *     ),
+
      *     @OA\Parameter(
      *         name="status",
      *         description="Currency status. Types of statuses: Active = 1, Inactive = 0",
@@ -217,6 +194,23 @@ class CurrencyController extends Controller
      *              type="integer"
      *         )
      *     ),
+     *     @OA\RequestBody(
+    *            @OA\JsonContent(
+    *                type="object",
+    *                @OA\Property(
+    *                    property="title",
+    *                    type="string",
+    *                    description="title",
+    *                    example="title"
+    *                ),
+    *                @OA\Property(
+    *                    property="code",
+    *                    type="string",
+    *                    description="code",
+    *                    example="code"
+    *                ),
+    *           ),
+    *       ),
      *     @OA\Response(
      *         response="200",
      *         description="Success"
@@ -229,35 +223,32 @@ class CurrencyController extends Controller
      * @return mixed
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function updateStatus(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        // Validate input
-        $this->validate($request, [
-            'status' => 'boolean'
-        ]);
 
-        // Get currency model
         try {
-            $currency = Currency::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return response()->jsonApi([
-                'type' => 'danger',
-                'title' => 'Currency not found',
-                'message' => "Currency #{$id} not found"
-            ], 404);
-        }
 
-        // Update currency data
-        try {
-            $currency->status = $request->get('status', Currency::STATUS_ACTIVE);
+            // Validate input
+            $this->validate($request, [
+                'code' => 'required|string',
+                'title' => 'required|string',
+            ]);
+
+            // Get currency model
+            $currency = CurrencyType::where('id', $id)->first();
+
+
+            $currency->title = $request->title;
+            $currency->code = $request->code;
             $currency->save();
 
-            // Return response
             return response()->jsonApi([
                 'type' => 'success',
                 'title' => 'Status update',
-                'message' => "Status has been successful updated"
+                'message' => "Status has been successful updated",
+                'data' => $currency
             ], 200);
+
         } catch (Exception $e) {
             return response()->jsonApi([
                 'type' => 'danger',

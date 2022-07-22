@@ -15,16 +15,26 @@ $router->group([
     $router->group([
         'namespace' => 'Public'
     ], function ($router) {
-        //
-    });
-    /**
-     * Currencies exchange rates from CoinMarketCap
-     */
-    $router->group([
-        'namespace' => 'Public',
-        'prefix' => 'coinmarketcap'
-    ], function ($router) {
-        $router->get('/exchange-rates', 'CoinMarketCapController@index');
+
+        /**
+         * Currency type for clients
+         */
+        $router->group([
+            'prefix' => 'currencyType'
+        ], function ($router) {
+            $router->get('/', 'CurrencyTypeController@index');
+            $router->get('/{id}', 'CurrencyTypeController@show');
+        });
+
+        /**
+         * Currencies exchange rates from CoinMarketCap
+         */
+        $router->group([
+            'prefix' => 'coinmarketcap'
+        ], function ($router) {
+            $router->get('/exchange-rates', 'ExchangeRateController@index');
+        });
+
     });
 
     /**
@@ -72,6 +82,18 @@ $router->group([
             'checkAdmin'
         ]
     ], function ($router) {
+
+        /**
+         * Currency type for clients
+         */
+        $router->group([
+            'prefix' => 'currencyType'
+        ], function ($router) {
+            $router->delete('/', 'CurrencyTypeController@destroy');
+            $router->put('/{id}', 'CurrencyTypeController@update');
+            $router->post('/', 'CurrencyTypeController@store');
+        });
+
         /**
          * Currencies Admin Management
          */
@@ -103,7 +125,7 @@ $router->group([
         'namespace' => 'Public',
         'prefix' => 'currency/exchange'
     ], function ($router) {
-        $router->get('/rate', 'ExchangeRate@index');
+        $router->get('/rate', 'ExchangeRateController@index');
     });
 
     /**

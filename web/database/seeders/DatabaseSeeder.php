@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // Seeds for local and staging
         if (App::environment(['local', 'staging'])) {
-            //
+            $this->call([
+                CurrencyTypesTableSeeder::class,
+                CurrenciesTableSeeder::class
+            ]);
         }
 
         // Seeds for production

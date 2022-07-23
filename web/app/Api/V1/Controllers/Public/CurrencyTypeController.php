@@ -32,41 +32,6 @@ class CurrencyTypeController extends Controller
      *         }
      *     }},
      *
-     * @OA\Response(
-     *          response="200",
-     *          description="Success",
-     *          @OA\JsonContent(
-     *              type="array",
-     *              @OA\Items(
-     *
-     *             @OA\Property(
-     *                  property="id",
-     *                  type="string",
-     *                  description="id",
-     *                  example="96772fb4-30e9-4e71-9b0c-deb8e1efe8b5"
-     *              ),
-     *              @OA\Property(
-     *                  property="title",
-     *                  type="string",
-     *                  description="title",
-     *                  example="title"
-     *              ),
-     *              @OA\Property(
-     *                  property="code",
-     *                  type="string",
-     *                  description="code",
-     *                  example="code"
-     *              ),
-     *              @OA\Property(
-     *                  property="created_at",
-     *                  type="string",
-     *                  description="timestamp of data entry",
-     *                  example="2022-05-09T12:45:46.000000Z"
-     *              ),
-     *           ),
-     *        ),
-     *    ),
-     *
      *     @OA\Parameter(
      *         name="limit",
      *         description="count of currencies in return",
@@ -125,41 +90,6 @@ class CurrencyTypeController extends Controller
      *             "ManagerWrite"
      *         }
      *     }},
-     *
-     * @OA\Response(
-     *          response="200",
-     *          description="Success",
-     *          @OA\JsonContent(
-     *              type="array",
-     *              @OA\Items(
-     *
-     *             @OA\Property(
-     *                  property="id",
-     *                  type="string",
-     *                  description="id",
-     *                  example="96772fb4-30e9-4e71-9b0c-deb8e1efe8b5"
-     *              ),
-     *              @OA\Property(
-     *                  property="title",
-     *                  type="string",
-     *                  description="title",
-     *                  example="title"
-     *              ),
-     *              @OA\Property(
-     *                  property="code",
-     *                  type="string",
-     *                  description="code",
-     *                  example="code"
-     *              ),
-     *              @OA\Property(
-     *                  property="created_at",
-     *                  type="string",
-     *                  description="timestamp of data entry",
-     *                  example="2022-05-09T12:45:46.000000Z"
-     *              ),
-     *           ),
-     *        ),
-     *    ),
      *
      *     @OA\Parameter(
      *         name="limit",

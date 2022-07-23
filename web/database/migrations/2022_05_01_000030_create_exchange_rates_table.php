@@ -19,8 +19,7 @@ class CreateExchangeRatesTable extends Migration
             $table->text('currency_name')->nullable();
 
             $table->string('symbol');
-            $table->string('coin_market_cap_id');
-            $table->string('price');
+            $table->string('price')->nullable();
             $table->timestamp('last_updated');
 
 
@@ -30,6 +29,7 @@ class CreateExchangeRatesTable extends Migration
             $table->string('provider')->nullable();
             $table->longText('data')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

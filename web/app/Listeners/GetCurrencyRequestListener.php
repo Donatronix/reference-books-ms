@@ -10,7 +10,7 @@ class GetCurrencyRequestListener
      * @var string
      */
     private const RECEIVER_LISTENER = 'GetCurrencyResponse';
-    
+
     /**
      * Create the event listener.
      *
@@ -37,11 +37,11 @@ class GetCurrencyRequestListener
 
         //Send feedback if validation fails
         if ($validation->fails()) {
-            \PubSub::transaction(function () {})->publish(self::RECEIVER_LISTENER, [
+            \PubSub::publish(self::RECEIVER_LISTENER, [
                 'status' => 'error',
                 'message' => $validation->errors()
             ], $queryData['replay_to']);
-            
+
             exit;
         }
 
@@ -69,12 +69,12 @@ class GetCurrencyRequestListener
             });
 
             // Send currency list response to wallet microservice
-            \PubSub::transaction(function () {})->publish(self::RECEIVER_LISTENER, array_merge($list->toArray(),[
+            \PubSub::publish(self::RECEIVER_LISTENER, array_merge($list->toArray(),[
                 'status' => 'success'
             ]), $queryData['replay_to']);
 
          } catch(\Exception $e){
-            \PubSub::transaction(function () {})->publish(self::RECEIVER_LISTENER, [
+            \PubSub::publish(self::RECEIVER_LISTENER, [
                 'status' => 'error',
                 'message' => $e->errors()
             ], $queryData['replay_to']);

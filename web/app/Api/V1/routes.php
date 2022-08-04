@@ -54,7 +54,8 @@ $router->group([
             'prefix' => 'currencies'
         ], function ($router) {
             $router->get('/', 'CurrencyController@index');
-            $router->get('rate', 'CurrencyController@getRate');
+            $router->get('rates', 'CurrencyController@getRates');
+            $router->get('rates/{currency}', 'CurrencyController@getCurrencyRate');
             $router->get('tokens', 'CurrencyController@tokens');
         });
 

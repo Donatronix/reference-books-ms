@@ -8,7 +8,6 @@ use App\Services\TokenService;
 
 class CurrencySettingController extends Controller
 {
-
     /**
      *
      * @property TokenService
@@ -75,7 +74,6 @@ class CurrencySettingController extends Controller
             'data' => $tokens
         ], 200);
     }
-
 
     /**
      * Admin adding of Token
@@ -174,18 +172,6 @@ class CurrencySettingController extends Controller
             ], 400);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
 
     /**
      * Admin update of Token
@@ -289,8 +275,7 @@ class CurrencySettingController extends Controller
             ], 400);
         }
     }
-
-
+    
     /**
      * Admin Delete of Token
      *

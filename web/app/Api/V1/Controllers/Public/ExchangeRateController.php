@@ -6,6 +6,7 @@ use App\Api\V1\Controllers\Controller;
 use App\Models\ExchangeRate as History;
 use App\Services\CurrencyExchange\CoinMarketCapExchange;
 use App\Models\Currency;
+use Illuminate\Support\Carbon;
 
 class ExchangeRateController extends Controller
 {
@@ -76,20 +77,21 @@ class ExchangeRateController extends Controller
         $is_saved = [];
         if ($response) {
             try {
-                foreach ($response['data'] as $value) {
-                    foreach ($value['quote'] as $val) {
-                        $rate[] = (isset($val['price']) ? $val['price'] : '0');
-                        $time[] = (isset($val['last_updated']) ? $val['last_updated'] : '');
-                    }
-                    $is_saved = History::create([
-                        'currency_name'     => $value['name'],
-                        'currency'          => $value['symbol'],
-                        'rate'              => $rate[0],
-                        'time'              => $time[0],
-                        'provider'          => $provider,
-                        'data'              => json_encode($response),
-                        'symbol'            => $value['symbol']
-                    ]);
+                    foreach ($response['data'] as $value) {
+                        foreach ($value['quote'] as $val) {
+                            $rate[] = (isset($val['price']) ? $val['price'] : '0');
+                            $time[] = (isset($val['last_updated']) ? $val['last_updated'] : '');
+                        }
+                        $is_saved = History::updateOrCreate(['currency' => $value['symbol']], [
+                            'currency_name'     => $value['name'],
+                            'currency'          => $value['symbol'],
+                            'rate'              => $rate[0],
+                            'time'              => $time[0],
+                            'last_updated'      => Carbon::parse($time[0]),
+                            'provider'          => $provider,
+                            'data'              => json_encode($response),
+                            'symbol'            => $value['symbol']
+                        ]);
                 }
             } catch (\Exception $e) {
                 return response()->jsonApi([

@@ -9,6 +9,8 @@ use App\Models\CurrencyType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\ExchangeRate as History;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -148,7 +150,55 @@ class CurrencyController extends Controller
      * @OA\Get(
      *     path="/currencies/rate",
      *     summary="Show list of currencies",
-     *     description="Show list of currencies",
+     *     description="Show list of currencies and rates compared dollars",
+     *     tags={"Currencies"},
+     *
+     *     security={{
+     *         "default": {
+     *             "ManagerRead",
+     *             "User",
+     *             "ManagerWrite"
+     *         }
+     *     }},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Success",
+     *     )
+     * )
+     *
+     * @param Request $request
+     *
+     * @return $response
+     *
+     * @throws \Exception
+     */
+    public function getRates(Request $request)
+    {
+        try {
+            $data = History::all();
+
+            return response()->jsonApi([
+                'type' => 'success',
+                'title' => 'Get Currency Rates',
+                'message' => 'Get Currency Rates',
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->jsonApi([
+                'type' => 'danger',
+                'title' => 'Display a listing of currencies',
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    /**
+     * Method for list of currencies
+     *
+     * @OA\Get(
+     *     path="/currencies/rate/{currency}",
+     *     summary="Show list of currencies",
+     *     description="Show list of currencies and rates compared dollars",
      *     tags={"Currencies"},
      *
      *     security={{
@@ -160,23 +210,13 @@ class CurrencyController extends Controller
      *     }},
      *
      *     @OA\Parameter(
-     *         name="from_currency",
-     *         description="from ",
-     *         in="query",
-     *         required=false,
+     *         name="currency",
+     *         description="currency to get its dollar equivalent",
+     *         in="path",
+     *         required=true,
      *         @OA\Schema(
-     *              type="integer",
-     *              default = 20,
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="to_currency",
-     *         description="page of list",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default=1,
+     *              type="string",
+     *              default = "usd",
      *         )
      *     ),
      *     @OA\Response(
@@ -187,27 +227,28 @@ class CurrencyController extends Controller
      *
      * @param Request $request
      *
-     * @return \Sumra\SDK\
+     * @return $response
      *
      * @throws \Exception
      */
-    public function getRate(Request $request)
+    public function getCurrencyRate($currency)
     {
-        $from = $this->repository->findByCode($request->from_currency);
-        $to = $this->repository->findByCode($request->to_currency);
+        try {
+            $data = History::where("currency", $currency)->first();
 
-        dd($from, $to);
-
-        $rate = $from->repository->getRate($to);
-
-        return [
-            'from_currency' => $from->code,
-            'from_symbol' => $from->symbol,
-            'to_currency' => $to->code,
-            'to_symbol' => $to->symbol,
-            'rate' => $rate,
-            'symmetric_rate' => ($rate * 1.03)
-        ];
+            return response()->jsonApi([
+                'type' => 'success',
+                'title' => 'Get Currency Rate',
+                'message' => 'Get Currency Rate',
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->jsonApi([
+                'type' => 'danger',
+                'title' => 'Get currency rate',
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
 
     /**

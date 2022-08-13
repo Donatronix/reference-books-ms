@@ -36,7 +36,6 @@ $app->withEloquent();
 | your own bindings here if you like or you can make another file.
 |
 */
-
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
@@ -101,7 +100,9 @@ $app->register(App\Providers\EventServiceProvider::class);
  */
 $app->configure('queue');
 $app->register(VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class);
-class_alias(\Illuminate\Support\Facades\App::class, 'App');
+if (!class_exists('App')) {
+    class_alias(\Illuminate\Support\Facades\App::class, 'App');
+}
 $app->register(\Sumra\SDK\PubSubServiceProvider::class);
 
 /**

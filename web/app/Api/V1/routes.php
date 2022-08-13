@@ -15,7 +15,6 @@ $router->group([
     $router->group([
         'namespace' => 'Public'
     ], function ($router) {
-
         /**
          * Currency type for clients
          */
@@ -59,7 +58,6 @@ $router->group([
             $router->get('tokens', 'CurrencyController@tokens');
         });
 
-
         /**
          * Tokens
          */
@@ -73,7 +71,7 @@ $router->group([
     /**
      * ADMIN PANEL ACCESS
      *
-     * Admin / super admin access level (E.g CEO company)
+     * Admin | Super admin access level (E.g CEO company)
      */
     $router->group([
         'prefix' => 'admin',
@@ -83,7 +81,6 @@ $router->group([
             'checkAdmin'
         ]
     ], function ($router) {
-
         /**
          * Currency type for clients
          */

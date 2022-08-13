@@ -15,19 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seede for all
+        $this->call([
+            CurrencyTypesTableSeeder::class,
+            CurrenciesTableSeeder::class
+        ]);
+
         // Seeds for local and staging
         if (App::environment(['local', 'staging'])) {
             $this->call([
-                CurrencyTypesTableSeeder::class,
-                CurrenciesTableSeeder::class
-            ]);
-        }
-
-        // Seeds for production
-        if (App::environment('production')) {
-            $this->call([
-                CurrencyTypesTableSeeder::class,
-                CurrenciesTableSeeder::class
+                //
             ]);
         }
     }

@@ -12,9 +12,13 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        /**
+         * Get Currency List Request
+         */
         'GetCurrencyRequest' => [
             'App\Listeners\GetCurrencyRequestListener',
         ],
+
         'CreateCurrency' => [
             'App\Listeners\CreateCurrencyListener',
         ],

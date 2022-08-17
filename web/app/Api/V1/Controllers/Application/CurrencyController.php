@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\ExchangeRate as History;
-use Exception;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Class CurrencyController
@@ -178,14 +176,12 @@ class CurrencyController extends Controller
             $data = History::all();
 
             return response()->jsonApi([
-                'type' => 'success',
                 'title' => 'Get Currency Rates',
                 'message' => 'Get Currency Rates',
                 'data' => $data
             ], 200);
         } catch (\Exception $e) {
             return response()->jsonApi([
-                'type' => 'danger',
                 'title' => 'Display a listing of currencies',
                 'message' => $e->getMessage()
             ], 404);

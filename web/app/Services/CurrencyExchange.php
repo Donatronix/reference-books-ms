@@ -9,19 +9,19 @@ use ReflectionException;
 class CurrencyExchange
 {
     /**
-     * @param $gateway
+     * @param $provider
      *
      * @return object
      * @throws ReflectionException
      * @throws Exception
      */
-    public static function getInstance($gateway): object
+    public static function getInstance($provider): object
     {
-        $class = '\App\Services\CurrencyExchange\\' . $gateway . 'Exchange';
+        $class = '\App\Services\CurrencyExchange\\' . $provider . 'Exchange';
         $reflector = new ReflectionClass($class);
 
         if (!$reflector->isInstantiable()) {
-            throw new Exception("Currency Exchange gateway [$class] is not instantiable.");
+            throw new Exception("Currency Exchange service [$class] is not instantiable.");
         }
 
         return $reflector->newInstance();

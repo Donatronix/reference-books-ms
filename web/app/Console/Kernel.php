@@ -13,25 +13,21 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //GetCurrencies::class,
         Commands\GetCurrencyExchangeRate::class
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param Schedule $schedule
      *
      * @return void
      */
     protected function schedule(Schedule $schedule): void
     {
         // Run
-        $schedule->command('currencies:create')
-            ->hourly();
-        //->everyMinute();
-        //->runInBackground();
-        //->emailOutputTo('support@ultainfinity.com');
+        $schedule->command('currencies-rate:update')
+            ->everyFifteenMinutes();
     }
 
     /**

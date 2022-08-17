@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Api\V1\Controllers\Public\ExchangeRateController;
 use Illuminate\Console\Command;
-use App\Api\V1\Controllers\Public\ExchangeRate;
 
 class GetCurrencyExchangeRate extends Command
 {
@@ -12,7 +12,7 @@ class GetCurrencyExchangeRate extends Command
      *
      * @var string
      */
-    protected $signature = 'currencies:create';
+    protected $signature = 'currencies-rate:update';
 
     /**
      * The console command description.
@@ -36,10 +36,9 @@ class GetCurrencyExchangeRate extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
-        //Make an API Call to coinMarketCap and log the exchange rate to History.
-        $getMethod = new ExchangeRate;
-        $getMethod->index();
+        // Make an API Call to coinMarketCap and log the exchange rate to History.
+        (new ExchangeRateController())->index();
     }
 }

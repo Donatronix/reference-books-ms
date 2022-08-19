@@ -173,12 +173,17 @@ class CurrencyController extends Controller
     public function getRates(Request $request)
     {
         try {
-            $data = History::all();
+            $data = History::select(['symbol', 'rate'])->all();
+
+            $output = [];
+            foreach ($data as $item){
+                $output[strtolower($item['symbol'])] = $item['rate'];
+            }
 
             return response()->jsonApi([
                 'title' => 'Get Currency Rates',
                 'message' => 'Get Currency Rates',
-                'data' => $data
+                'data' => $output
             ], 200);
         } catch (\Exception $e) {
             return response()->jsonApi([
@@ -278,7 +283,6 @@ class CurrencyController extends Controller
             'codes' => Currency::codes()
         ], 200);
     }
-
 
     /**
      * Method for getting Tokens

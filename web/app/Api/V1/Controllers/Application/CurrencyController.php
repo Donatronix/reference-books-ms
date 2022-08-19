@@ -146,7 +146,7 @@ class CurrencyController extends Controller
      * Method for list of currencies
      *
      * @OA\Get(
-     *     path="/currencies/rate",
+     *     path="/currencies/rates",
      *     summary="Show list of currencies",
      *     description="Show list of currencies and rates compared dollars",
      *     tags={"Currencies"},
@@ -197,7 +197,7 @@ class CurrencyController extends Controller
      * Method for list of currencies
      *
      * @OA\Get(
-     *     path="/currencies/rate/{currency}",
+     *     path="/currencies/rates/{currency}",
      *     summary="Show list of currencies",
      *     description="Show list of currencies and rates compared dollars",
      *     tags={"Currencies"},

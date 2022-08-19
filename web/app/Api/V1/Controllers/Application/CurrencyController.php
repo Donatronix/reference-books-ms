@@ -9,7 +9,7 @@ use App\Models\CurrencyType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\ExchangeRate as History;
+use App\Models\ExchangeRate;
 
 /**
  * Class CurrencyController
@@ -164,16 +164,12 @@ class CurrencyController extends Controller
      *     )
      * )
      *
-     * @param Request $request
-     *
-     * @return $response
-     *
      * @throws \Exception
      */
-    public function getRates(Request $request)
+    public function getRates()
     {
         try {
-            $data = History::select(['symbol', 'rate'])->all();
+            $data = ExchangeRate::select(['symbol', 'rate'])->get();
 
             $output = [];
             foreach ($data as $item){
@@ -184,7 +180,7 @@ class CurrencyController extends Controller
                 'title' => 'Get Currency Rates',
                 'message' => 'Get Currency Rates',
                 'data' => $output
-            ], 200);
+            ]);
         } catch (\Exception $e) {
             return response()->jsonApi([
                 'title' => 'Display a listing of currencies',
@@ -226,23 +222,20 @@ class CurrencyController extends Controller
      *     )
      * )
      *
-     * @param Request $request
+     * @param $currency
+     * @return mixed $response
      *
-     * @return $response
-     *
-     * @throws \Exception
      */
-    public function getCurrencyRate($currency)
+    public function getRateByCurrency($currency): mixed
     {
         try {
-            $data = History::where("currency", $currency)->first();
+            $data = ExchangeRate::where("currency", $currency)->first();
 
             return response()->jsonApi([
-                'type' => 'success',
                 'title' => 'Get Currency Rate',
                 'message' => 'Get Currency Rate',
                 'data' => $data
-            ], 200);
+            ]);
         } catch (\Exception $e) {
             return response()->jsonApi([
                 'type' => 'danger',

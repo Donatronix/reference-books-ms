@@ -19,7 +19,6 @@ use Illuminate\Validation\ValidationException;
  */
 class CurrencyController extends Controller
 {
-
     /**
      * Method for list of currencies
      *

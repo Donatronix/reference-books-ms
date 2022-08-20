@@ -2,7 +2,7 @@
 
 namespace App\Api\V1\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Api\V1\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 
@@ -27,14 +27,6 @@ class CurrencySettingController extends Controller
      *     description="Get all CS",
      *     tags={"Admin | Currencies Setting "},
      *
-     *     security={{
-     *         "default": {
-     *             "AdminRead",
-     *             "AdminWrite",
-     *             "ManagerRead",
-     *             "ManagerWrite"
-     *         }
-     *     }},
      *     @OA\Response(
      *         response="200",
      *         description="Success"
@@ -275,7 +267,7 @@ class CurrencySettingController extends Controller
             ], 400);
         }
     }
-    
+
     /**
      * Admin Delete of Token
      *

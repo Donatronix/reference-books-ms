@@ -3,14 +3,11 @@
 namespace App\Api\V1\Controllers\Admin;
 
 use App\Api\V1\Controllers\Controller;
-use App\Models\Currency;
+
 use App\Models\CurrencyType;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Sumra\SDK\Traits\Collection\CollectionItemsData;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -20,7 +17,6 @@ use Illuminate\Validation\ValidationException;
  */
 class CurrencyTypeController extends Controller
 {
-
     /**
      * Method to delete currency type
      *

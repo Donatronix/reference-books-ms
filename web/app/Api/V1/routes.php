@@ -19,7 +19,7 @@ $router->group([
          * Currency type for clients
          */
         $router->group([
-            'prefix' => 'currencyType'
+            'prefix' => 'currency-types'
         ], function ($router) {
             $router->get('/', 'CurrencyTypeController@index');
             $router->get('/{id}', 'CurrencyTypeController@show');
@@ -29,11 +29,11 @@ $router->group([
          * Currencies exchange rates from CoinMarketCap
          */
         $router->group([
-            'prefix' => 'coinmarketcap'
+            'prefix' => 'rate-update'
         ], function ($router) {
-            $router->get('/exchange-rates', 'ExchangeRateController@index');
+            //Get Coin market cap exchange rate
+            $router->get('/coinmarketcap', 'ExchangeRateController@index');
         });
-
     });
 
     /**
@@ -45,7 +45,6 @@ $router->group([
         'namespace' => 'Application',
         'middleware' => 'checkUser'
     ], function ($router) {
-
         /**
          * Currencies for clients
          */
@@ -54,7 +53,7 @@ $router->group([
         ], function ($router) {
             $router->get('/', 'CurrencyController@index');
             $router->get('rates', 'CurrencyController@getRates');
-            $router->get('rates/{currency}', 'CurrencyController@getCurrencyRate');
+            $router->get('rates/{currency}', 'CurrencyController@getRateByCurrency');
             $router->get('tokens', 'CurrencyController@tokens');
         });
 
@@ -87,9 +86,9 @@ $router->group([
         $router->group([
             'prefix' => 'currencyType'
         ], function ($router) {
-            $router->delete('/', 'CurrencyTypeController@destroy');
-            $router->put('/{id}', 'CurrencyTypeController@update');
             $router->post('/', 'CurrencyTypeController@store');
+            $router->put('/{id}', 'CurrencyTypeController@update');
+            $router->delete('/', 'CurrencyTypeController@destroy');
         });
 
         /**
@@ -113,17 +112,6 @@ $router->group([
                 $router->delete('{id}', 'CurrencySettingController@destroy');
             });
         });
-    });
-
-    //Get Coin market cap exchange rate
-    $router->get('/currency-rate', 'LogExchangeRateController@index');
-
-    //Get Coin market cap exchange rate
-    $router->group([
-        'namespace' => 'Public',
-        'prefix' => 'currency/exchange'
-    ], function ($router) {
-        $router->get('/rate', 'ExchangeRateController@index');
     });
 
     /**

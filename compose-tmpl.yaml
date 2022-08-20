@@ -15,6 +15,7 @@ services:
       - PHP_DISMOD=apcu,calendar,exif,gd,imagick,imap,ioncube,mongodb,ldap,pcntl,pdo_pgsql,pgsql,shmop,soap,sysvmsg,sysvsem,sysvshm,vips
       - PHP_DISPLAY_ERRORS=1
       - LOG_STDERR=/var/log/vhost-error.log
+      - SERVICE_CRON_OPTS=* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
       - PUBSUB_RECEIVER=Local.ReferenceBooksMS
     volumes:
       - ./web:/var/www/html:rw

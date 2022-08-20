@@ -11,8 +11,6 @@ class ExchangeRate extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public static string $BASE_URL = 'https://pro-api.coinmarketcap.com';
-
     public static array $CURRENCIES = [
         'USD',
         'EUR',
@@ -20,8 +18,6 @@ class ExchangeRate extends Model
         'BTC',
         'ETH',
     ];
-
-    protected $table = 'exchange_rates';
 
     protected $fillable = [
         'currency',

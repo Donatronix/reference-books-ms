@@ -190,6 +190,7 @@ class GetCurrencies extends Command
                 'price' => $data->quote->$currency->price,
                 'last_updated' => $data->last_updated,
             ];
+
             ExchangeRate::updateOrCreate([
                 'symbol' => $currency,
                 'coin_market_cap_id' => $data->id], $value);

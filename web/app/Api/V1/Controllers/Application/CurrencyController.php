@@ -9,9 +9,7 @@ use App\Models\CurrencyType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\ExchangeRate as History;
-use Exception;
-use Illuminate\Support\Facades\Cache;
+use App\Models\ExchangeRate;
 
 /**
  * Class CurrencyController
@@ -148,7 +146,7 @@ class CurrencyController extends Controller
      * Method for list of currencies
      *
      * @OA\Get(
-     *     path="/currencies/rate",
+     *     path="/currencies/rates",
      *     summary="Show list of currencies",
      *     description="Show list of currencies and rates compared dollars",
      *     tags={"Currencies"},
@@ -166,26 +164,25 @@ class CurrencyController extends Controller
      *     )
      * )
      *
-     * @param Request $request
-     *
-     * @return $response
-     *
      * @throws \Exception
      */
-    public function getRates(Request $request)
+    public function getRates()
     {
         try {
-            $data = History::all();
+            $data = ExchangeRate::select(['symbol', 'rate'])->get();
+
+            $output = [];
+            foreach ($data as $item){
+                $output[strtolower($item['symbol'])] = $item['rate'];
+            }
 
             return response()->jsonApi([
-                'type' => 'success',
                 'title' => 'Get Currency Rates',
                 'message' => 'Get Currency Rates',
-                'data' => $data
-            ], 200);
+                'data' => $output
+            ]);
         } catch (\Exception $e) {
             return response()->jsonApi([
-                'type' => 'danger',
                 'title' => 'Display a listing of currencies',
                 'message' => $e->getMessage()
             ], 404);
@@ -196,7 +193,7 @@ class CurrencyController extends Controller
      * Method for list of currencies
      *
      * @OA\Get(
-     *     path="/currencies/rate/{currency}",
+     *     path="/currencies/rates/{currency}",
      *     summary="Show list of currencies",
      *     description="Show list of currencies and rates compared dollars",
      *     tags={"Currencies"},
@@ -225,23 +222,20 @@ class CurrencyController extends Controller
      *     )
      * )
      *
-     * @param Request $request
+     * @param $currency
+     * @return mixed $response
      *
-     * @return $response
-     *
-     * @throws \Exception
      */
-    public function getCurrencyRate($currency)
+    public function getRateByCurrency($currency): mixed
     {
         try {
-            $data = History::where("currency", $currency)->first();
+            $data = ExchangeRate::where("currency", $currency)->first();
 
             return response()->jsonApi([
-                'type' => 'success',
                 'title' => 'Get Currency Rate',
                 'message' => 'Get Currency Rate',
                 'data' => $data
-            ], 200);
+            ]);
         } catch (\Exception $e) {
             return response()->jsonApi([
                 'type' => 'danger',
@@ -282,7 +276,6 @@ class CurrencyController extends Controller
             'codes' => Currency::codes()
         ], 200);
     }
-
 
     /**
      * Method for getting Tokens

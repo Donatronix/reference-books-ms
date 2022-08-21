@@ -82,6 +82,7 @@ class CurrencySettingController extends Controller
      *             "ManagerWrite"
      *         }
      *     }},
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

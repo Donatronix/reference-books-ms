@@ -24,7 +24,7 @@ class CurrencyTypeController extends Controller
      *     path="/admin/currencyType",
      *     summary="Show list of currencies",
      *     description="Show list of currencies",
-     *     tags={"Admin / Currency type"},
+     *     tags={"Admin | Currency types"},
      *
      *     security={{
      *         "default": {
@@ -82,7 +82,7 @@ class CurrencyTypeController extends Controller
      *     path="/admin/currencyType",
      *     summary="Create currency",
      *     description="Create currency",
-     *     tags={"Admin / Currency type"},
+     *     tags={"Admin | Currency types"},
      *
      *     security={{
      *         "default": {
@@ -137,26 +137,27 @@ class CurrencyTypeController extends Controller
                 'title'     => 'required|string',
                 'code'      => 'required|string',
             ]);
+
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             }
+
             // Create currency model
             $currencyType = CurrencyType::create($request->all());
-            $resp['type']       = "Success";
+
             $resp['title']      = "Create currency";
             $resp['message']    = "Create currecy";
             $resp['data']       = $currencyType;
+
             return response()->jsonApi($resp, 200);
         } catch (ValidationException $e) {
             return response()->jsonApi([
-                'type'      => 'warning',
                 'title'     => 'Create currency',
                 'message'   => 'Validation error',
                 'data'      => $e->getMessage()
             ], 400);
         } catch (Exception $e) {
             return response()->jsonApi([
-                'type'      => 'danger',
                 'title'     => 'Create currency',
                 'message'   => 'Error in creating currency',
                 'data'      => $e->getMessage()
@@ -171,7 +172,7 @@ class CurrencyTypeController extends Controller
      *     path="/admin/currencyType/{id}/update-status",
      *     summary="Update status of currency",
      *     description="Update status of currency",
-     *     tags={"Admin / Currency type"},
+     *     tags={"Admin | Currency types"},
      *
      *     security={{
      *         "default": {
@@ -221,9 +222,7 @@ class CurrencyTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
-
             // Validate input
             $this->validate($request, [
                 'code' => 'required|string',
@@ -232,22 +231,17 @@ class CurrencyTypeController extends Controller
 
             // Get currency model
             $currency = CurrencyType::where('id', $id)->first();
-
-
             $currency->title = $request->title;
             $currency->code = $request->code;
             $currency->save();
 
             return response()->jsonApi([
-                'type' => 'success',
                 'title' => 'Status update',
                 'message' => "Status has been successful updated",
                 'data' => $currency
-            ], 200);
-
+            ]);
         } catch (Exception $e) {
             return response()->jsonApi([
-                'type' => 'danger',
                 'title' => 'Status update',
                 'message' => $e->getMessage()
             ], $e->getCode());

@@ -16,14 +16,9 @@ $router->group([
         'namespace' => 'Public'
     ], function ($router) {
         /**
-         * Currency type for clients
+         * Get currency types list
          */
-        $router->group([
-            'prefix' => 'currency-types'
-        ], function ($router) {
-            $router->get('/', 'CurrencyTypeController@index');
-            $router->get('/{id}', 'CurrencyTypeController@show');
-        });
+        $router->get('currency-types', 'CurrencyTypeController');
 
         /**
          * Currencies exchange rates from CoinMarketCap

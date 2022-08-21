@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\CurrencyType;
 use Illuminate\Database\Seeder;
 
-
 class CurrencyTypesTableSeeder extends Seeder
 {
     /**
@@ -15,7 +14,6 @@ class CurrencyTypesTableSeeder extends Seeder
      */
     public function run()
     {
-
         $list = [
             CurrencyType::FIAT => [
                 'title' => 'Fiat Money',

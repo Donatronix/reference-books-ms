@@ -8,125 +8,42 @@ use Exception;
 use Illuminate\Http\Request;
 
 /**
- * Class CurrencyController
+ * Class CurrencyTypeController
  *
- * @package App\Api\V1\Controllers\Admin
+ * @package App\Api\V1\Controllers\Public
  */
 class CurrencyTypeController extends Controller
 {
-
     /**
-     * Method for list of currencies type
+     * Method getting currency types list
      *
      * @OA\Get(
-     *     path="currencyType",
-     *     summary="Show list of currencies",
-     *     description="Show list of currencies",
-     *     tags={"Currency type"},
+     *     path="/currency-types",
+     *     summary="Get currency types list",
+     *     description="Get currency types list",
+     *     tags={"Public | Currency types"},
      *
-     *     security={{
-     *         "default": {
-     *             "ManagerRead",
-     *             "User",
-     *             "ManagerWrite"
-     *         }
-     *     }},
-     *
-     *     @OA\Parameter(
-     *         name="limit",
-     *         description="count of currencies in return",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default = 20,
-     *         )
-     *     ),
      *     @OA\Response(
      *         response="200",
      *         description="Success",
      *     )
      * )
      *
-     * @param Request $request
-     *
-     * @return \Sumra\SDK\
-     *
      * @throws \Exception
      */
-    public function index(Request $request)
+    public function __invoke()
     {
         try {
-            $type = CurrencyType::paginate($request->get('limit', config('settings.pagination_limit')));
+            $type = CurrencyType::all();
+
             return response()->jsonApi([
-                'type' => 'success',
-                'title' => 'Get list of currency type',
-                'message' => 'List of currency type',
+                'title' => 'Get currency types',
+                'message' => 'List of currency types read successfully',
                 'data' => $type
-            ], 200);
+            ]);
         } catch (\Exception $e) {
             return response()->jsonApi([
-                'type' => 'danger',
-                'title' => 'Display a listing of currencies',
-                'message' => $e->getMessage()
-            ], 404);
-        }
-    }
-
-
-    /**
-     * Method for list of currencies type
-     *
-     * @OA\Get(
-     *     path="currencyType/{id}",
-     *     summary="get for list of currencies",
-     *     description="get from list of currencies",
-     *     tags={"Currency type"},
-     *
-     *     security={{
-     *         "default": {
-     *             "ManagerRead",
-     *             "User",
-     *             "ManagerWrite"
-     *         }
-     *     }},
-     *
-     *     @OA\Parameter(
-     *         name="limit",
-     *         description="count of currencies in return",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *              type="integer",
-     *              default = 20,
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Success",
-     *     )
-     * )
-     *
-     * @param Request $request
-     *
-     * @return \Sumra\SDK\
-     *
-     * @throws \Exception
-     */
-    public function show($id)
-    {
-        try {
-            $type = CurrencyType::findOrFail($id);
-            return response()->jsonApi([
-                'type' => 'success',
-                'title' => 'Get list of currency type',
-                'message' => 'List of currency type',
-                'data' => $type
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->jsonApi([
-                'type' => 'danger',
-                'title' => 'Display a listing of currencies',
+                'title' => 'Get currency types',
                 'message' => $e->getMessage()
             ], 404);
         }

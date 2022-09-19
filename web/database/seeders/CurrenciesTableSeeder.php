@@ -103,7 +103,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 6,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'ApeCoin',
@@ -113,7 +113,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 7,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Bitcoin Cash',
@@ -123,7 +123,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 8,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Dogecoin',
@@ -133,7 +133,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 9,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Litecoin',
@@ -143,7 +143,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 10,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Shiba Inu',
@@ -153,7 +153,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 11,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'USD Coin',
@@ -163,7 +163,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 12,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Tether',
@@ -173,7 +173,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 13,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'Dai',
@@ -183,7 +183,7 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 14,
-                'status' => false
+                'status' => true
             ],
             [
                 'title' => 'UTTA Token',

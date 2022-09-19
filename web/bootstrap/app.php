@@ -95,6 +95,11 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 
+/*
+ * Telegram Logger
+ */
+$app->register(\Sumra\SDK\Providers\TelegramLogServiceProvider::class);
+
 /**
  * Pubsub - RabbitMQ
  */

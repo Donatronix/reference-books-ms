@@ -56,7 +56,7 @@ class CurrenciesTableSeeder extends Seeder
                 'status' => true
             ],
             [
-                'title' => 'Etherium',
+                'title' => 'Ethereum',
                 'code' => 'eth',
                 'symbol' => 'U+039E',
                 'rate' => 1,
@@ -103,6 +103,86 @@ class CurrenciesTableSeeder extends Seeder
                 'icon' => '',
                 'type_id' => CurrencyType::CRYPTO,
                 'sort' => 6,
+                'status' => false
+            ],
+            [
+                'title' => 'ApeCoin',
+                'code' => 'ape',
+                'symbol' => 'APE',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 7,
+                'status' => false
+            ],
+            [
+                'title' => 'Bitcoin Cash',
+                'code' => 'bch',
+                'symbol' => 'BCH',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 8,
+                'status' => false
+            ],
+            [
+                'title' => 'Dogecoin',
+                'code' => 'doge',
+                'symbol' => 'DOGE',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 9,
+                'status' => false
+            ],
+            [
+                'title' => 'Litecoin',
+                'code' => 'ltc',
+                'symbol' => 'LTC',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 10,
+                'status' => false
+            ],
+            [
+                'title' => 'Shiba Inu',
+                'code' => 'shib',
+                'symbol' => 'SHIB',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 11,
+                'status' => false
+            ],
+            [
+                'title' => 'USD Coin',
+                'code' => 'usdc',
+                'symbol' => 'USDC',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 12,
+                'status' => false
+            ],
+            [
+                'title' => 'Tether',
+                'code' => 'usdt',
+                'symbol' => 'USDT',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 13,
+                'status' => false
+            ],
+            [
+                'title' => 'Dai',
+                'code' => 'dai',
+                'symbol' => 'DAI',
+                'rate' => 1,
+                'icon' => '',
+                'type_id' => CurrencyType::CRYPTO,
+                'sort' => 14,
                 'status' => false
             ],
             [
